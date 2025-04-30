@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <p>new</p>
+    <p class="text-white">new</p>
 
 </template>
 
