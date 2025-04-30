@@ -21,11 +21,11 @@
               <div class="flex items-center px-4 justify-start">
                 <div class="grid grid-cols-2 w-full">
                   <div class="flex items-center justify-end">
-                    <Settings class="w-4 h-4" />
+                    <Settings class="w-5 h-5" />
 
                   </div>
                   <div class="flex items-center justify-center">
-                    <Help class="w-4 h-4" />
+                    <Help class="w-5 h-5" />
 
                   </div>
                 </div>
