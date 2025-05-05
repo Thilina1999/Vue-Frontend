@@ -1,6 +1,6 @@
 <template>
   <nav class="bg-[#212121]">
-    <div class="px-2 sm:px-6 lg:px-8">
+    <div class="element">
       <div class="relative flex h-16 items-center justify-between">
         <div class="grid grid-cols-3 w-full">
           <div class="flex items-center justify-start">
@@ -19,12 +19,18 @@
 
               </div>
               <div class="flex items-center px-4 justify-start">
-                <div class="grid grid-cols-2 w-full">
+                <div class="grid grid-cols-4 w-full">
+                  <div class="flex items-center justify-end">
+
+                  </div>
+                  <div class="flex items-center justify-end">
+
+                  </div>
                   <div class="flex items-center justify-end">
                     <Settings class="w-5 h-5" />
 
                   </div>
-                  <div class="flex items-center justify-center">
+                  <div class="flex items-center justify-end">
                     <Help class="w-5 h-5" />
 
                   </div>
