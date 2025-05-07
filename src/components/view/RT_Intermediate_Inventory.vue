@@ -8,6 +8,8 @@
       <Title_Text class="text-lg" text="更新頻度:" />
     </div>
     <br />
+    <RT_Inventory_Navbar />
+    <br />
     <RT_Inventory_Tb />
 
   </div>
@@ -18,6 +20,7 @@ import Title from '../atom/Title.vue';
 import Title_Text from '../atom/Title_Text.vue';
 import TimeFunction from '../molecules/TimeFunction.vue';
 import RT_Inventory_Tb from '../organisms/RT_Inventory_Tb.vue';
+import RT_Inventory_Navbar from '../organisms/RT_Inventory_Navbar.vue';
 
 export default {
   name: "RT_Intermediate_Inventory",
@@ -25,7 +28,8 @@ export default {
     Title,
     Title_Text,
     TimeFunction,
-    RT_Inventory_Tb
+    RT_Inventory_Tb,
+    RT_Inventory_Navbar
   },
 };
 </script>
