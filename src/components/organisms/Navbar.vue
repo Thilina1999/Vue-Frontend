@@ -12,32 +12,10 @@
           <div class="flex items-center justify-start">
             <Dropdown />
           </div>
-          <div class="flex items-center justify-center">
-            <div class="grid grid-cols-2 w-full">
-              <div class="flex items-center justify-end">
-                <TimeFunction />
-
-              </div>
-              <div class="flex items-center px-4 justify-start">
-                <div class="grid grid-cols-4 w-full">
-                  <div class="flex items-center justify-end">
-
-                  </div>
-                  <div class="flex items-center justify-end">
-
-                  </div>
-                  <div class="flex items-center justify-end">
-                    <Settings class="w-5 h-5" />
-
-                  </div>
-                  <div class="flex items-center justify-end">
-                    <Help class="w-5 h-5" />
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
+          <div class="flex items-center justify-end">
+            <TimeFunction class="m-2" />
+            <Settings class="w-5 h-5 m-2" />
+            <Help class="w-5 h-5 m-2" />
           </div>
         </div>
       </div>

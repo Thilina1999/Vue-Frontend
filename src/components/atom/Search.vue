@@ -12,7 +12,7 @@
                     </svg>
                 </div>
                 <input type="search" id="default-search"
-                    class="block w-full p-3 ps-16 text-lg text-white border border-gray-300 rounded-sm bg-gray-50 focus:ring-white focus:border-white dark:bg-[#212121] dark:border-white dark:placeholder-white dark:text-white dark:focus:ring-white dark:focus:border-white"
+                    class="block w-full p-3 ps-16 text-lg text-white rounded-sm dark:bg-[#212121] dark:placeholder-white dark:text-white"
                     placeholder="絞込み検索" required />
             </div>
         </form>

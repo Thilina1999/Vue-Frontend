@@ -2,7 +2,7 @@
     <Menu as="div" class="relative inline-block text-left">
         <div>
             <MenuButton
-                class="inline-flex w-full justify-start lg:gap-x-36 md:gap-x-24 sm:gap-x-12 rounded-sm bg-[#212121] px-4 py-2 text-md font-semibold text-white shadow-xs ring-1 ring-white ring-inset hover:bg-gray-900 overflow-hidden whitespace-nowrap text-ellipsis">
+                class="inline-flex w-full justify-start lg:gap-x-36 md:gap-x-24 sm:gap-x-12 rounded-sm bg-[#212121] px-4 py-2 text-md font-semibold text-white shadow-xs ring-1 ring-white ring-inset hover:bg-gray-900 overflow-hidden text-ellipsis">
                 {{ selectedOption }}
                 <ChevronDownIcon class="size-5 text-white" aria-hidden="true" />
             </MenuButton>

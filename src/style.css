@@ -5,20 +5,20 @@ body {
 }
 
 .element {
-    padding-left: 2rem;  /* px-2 = 8px */
-    padding-right: 2rem;
+    padding-left: 1rem;  /* px-2 = 8px */
+    padding-right: 1rem;
   }
   
   @media (min-width: 640px) { /* sm */
     .element {
-      padding-left: 3rem;  /* sm:px-6 = 24px */
-      padding-right: 3rem;
+      padding-left: 2rem;  /* sm:px-6 = 24px */
+      padding-right: 2rem;
     }
   }
   
   @media (min-width: 1024px) { /* lg */
     .element {
-      padding-left: 5rem;  /* lg:px-8 = 32px */
-      padding-right: 5rem;
+      padding-left: 3rem;  /* lg:px-8 = 32px */
+      padding-right: 3rem;
     }
   }

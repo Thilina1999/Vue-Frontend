@@ -1,15 +1,7 @@
 <template>
-        <div class="grid grid-cols-3 w-full">
-            <div class="flex items-center justify-start">
-                <Search />
-            </div>
-            <div class="flex items-center justify-start">
-                <Page_Bar />
-                <Search class="px-2" />
-            </div>
-            <div class="flex items-center justify-start">
-                <Search />
-            </div>
+        <div class="flex items-center space-x-2 flex-wrap">
+                <Search class="m-2" />
+                <Page_Bar class="m-2" />
         </div>
 </template>
 
