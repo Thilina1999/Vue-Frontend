@@ -1,7 +1,7 @@
 <template>
-    <div class="overflow-x-auto p-1">
+    <div class="overflow-x-auto p-1 pb-6">
         <table class="w-full table-auto border-separate border rounded-sm  bg-white border-gray-500 text-white">
-            <thead>
+            <thead class="bg-white">
                 <tr class="text-black text-sm">
                     <th class="summary-row border bg-yellow-500 border-gray-300 text-left px-2 py-3.5" colspan="4">工程合計
                     </th>
@@ -27,7 +27,7 @@
             </thead>
 
             <tbody>
-                <tr v-for="(row, index) in tableData" :key="index" class="bg-gray-300 text-black text-sm">
+                <tr v-for="(row, index) in paginatedData" :key="index" class="bg-gray-300 text-black text-sm">
                     <td class="border border-gray-300 px-2 py-2">{{ row.メーカ }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.ASSY品番 }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.SUBASSY品番 }}</td>
@@ -47,16 +47,58 @@
 
         </table>
     </div>
+    <div class="m-4 flex justify-center space-x-2 text-black">
+        <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" :disabled="currentPage === 1"
+            @click="goToPage(currentPage - 1)">
+            Prev
+        </button>
+
+        <button v-for="page in totalPages" :key="page" class="px-3 py-1 border rounded" :class="{
+            'bg-gray-500 text-white': page === currentPage,
+            'bg-gray-200': page !== currentPage
+        }" @click="goToPage(page)">
+            {{ page }}
+        </button>
+
+        <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" :disabled="currentPage === totalPages"
+            @click="goToPage(currentPage + 1)">
+            Next
+        </button>
+    </div>
+
 </template>
 
 <script>
 export default {
     name: "Rt_Inventory_Tb",
     props: {
-                tableData: {
-                    type: Array,
-                    required: true
-                }
-            },
+        tableData: {
+            type: Array,
+            required: true
+        }
+    },
+    data() {
+        return {
+            currentPage: 1,
+            rowsPerPage: 11
+        };
+    },
+    computed: {
+        paginatedData() {
+            const start = (this.currentPage - 1) * this.rowsPerPage;
+            const end = start + this.rowsPerPage;
+            return this.tableData.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.tableData.length / this.rowsPerPage);
+        }
+    },
+    methods: {
+        goToPage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+                this.currentPage = page;
+            }
+        }
+    }
 };
 </script>
