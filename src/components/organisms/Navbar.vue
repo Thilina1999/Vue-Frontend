@@ -5,7 +5,10 @@
         <div class="grid grid-cols-3 w-full">
           <div class="flex items-center justify-start">
             <Logo class="px-4" />
-            <a class="text-white nav-link overflow-hidden whitespace-nowrap text-ellipsis block w-full" href="#">
+            <a
+              class="text-white nav-link overflow-hidden whitespace-nowrap text-ellipsis block w-full"
+              href="#"
+            >
               NOx組付け工程在庫管理システム
             </a>
           </div>
@@ -23,26 +26,15 @@
   </nav>
 </template>
 
-<script>
+<script setup>
 import Logo from "../atom/Logo.vue";
 import Dropdown from "../molecules/Dropdown.vue";
-import Settings from "../../../public/assets/Settings.vue"
+import Settings from "../../../public/assets/Settings.vue";
 import TimeFunction from "../molecules/TimeFunction.vue";
 import Help from "../../../public/assets/Help.vue";
-
-export default {
-  name: "NavBar",
-  components: {
-    Logo,
-    Dropdown,
-    Settings,
-    TimeFunction,
-    Help
-  },
-};
 </script>
 
-<style>
+<style scoped>
 .nav-color {
   background-color: #212121;
 }

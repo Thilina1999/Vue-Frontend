@@ -9,72 +9,57 @@
     </div>
     <br />
     <div class="flex items-center space-x-2 flex-wrap">
-        <Search class="m-2" text="絞込み検索" />
-        <Page_Bar class="m-2" />
+      <Search class="m-2" text="絞込み検索" />
+      <Page_Bar class="m-2" />
     </div>
     <br />
-    <RT_Inventory_Tb :getInventoryPage="getInventoryPage" />
-
+    <RT_Inventory_Tb :getInventoryPage="getInventoryPageData" />
   </div>
 </template>
 
-<script>
-import Title from '../atom/Title.vue';
-import Title_Text from '../atom/Title_Text.vue';
-import TimeFunction from '../molecules/TimeFunction.vue';
-import RT_Inventory_Tb from '../organisms/RT_Inventory_Tb.vue';
-import { getInventory, getInventoryManufactures, getInventoryPage } from '../../service/inventory';
-import Page_Bar from '../atom/Page_Bar.vue';
-import Search from '../atom/Search.vue';
+<script setup>
+import { ref, onMounted } from 'vue'
+import Title from '../atom/Title.vue'
+import Title_Text from '../atom/Title_Text.vue'
+import TimeFunction from '../molecules/TimeFunction.vue'
+import RT_Inventory_Tb from '../organisms/RT_Inventory_Tb.vue'
+import Page_Bar from '../atom/Page_Bar.vue'
+import Search from '../atom/Search.vue'
+import { getInventoryPage, getInventoryManufactures } from '../../service/inventory'
 
-export default {
-  name: "RT_Intermediate_Inventory",
-  components: {
-    Title,
-    Title_Text,
-    TimeFunction,
-    Page_Bar,
-    Search,
-    RT_Inventory_Tb,
-  },
-  data() {
-    return {
-      inventoryData: [],
-      inventory_manufactures: []
-    };
-  },
-  mounted() {
-    getInventoryManufactures().then(res =>{
-      this.inventory_manufactures = res.data;
-    }).catch(err =>{
-      console.error('Error extracting data', err);
+// Refs
+const inventoryData = ref([])
+const inventoryManufactures = ref([])
+
+// Lifecycle hook
+onMounted(() => {
+  getInventoryManufactures()
+    .then(res => {
+      inventoryManufactures.value = res.data
     })
+    .catch(err => {
+      console.error('Error extracting data', err)
+    })
+})
 
-  },
-  methods: {
-  handleSelection(option) {
-    console.log('Selected shipping class:', option)
-    // null means reset
-  },
-  async getInventoryPage(page, per_page) {
-    try {
-      const res = await getInventoryPage(page, per_page);
-      return res; // return the full API response (with `data` and `meta`)
-    } catch (err) {
-      console.error('Error fetching paginated inventory:', err);
-      return {
-        data: [],
-        meta: {
-          page: 1,
-          per_page: per_page,
-          total_items: 0,
-          total_pages: 1
-        }
-      };
+// Methods
+const getInventoryPageData = async (page, perPage) => {
+  try {
+    const res = await getInventoryPage(page, perPage)
+    return res
+  } catch (err) {
+    console.error('Error fetching paginated inventory:', err)
+    return {
+      data: [],
+      meta: {
+        page: 1,
+        per_page: perPage,
+        total_items: 0,
+        total_pages: 1
+      }
     }
-  },
+  }
 }
-};
 </script>
 
-<style></style>
+<style scoped></style>
