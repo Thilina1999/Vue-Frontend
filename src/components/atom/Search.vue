@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form class="w-48">
+        <form class="w-54">
             <label for="default-search"
                 class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
@@ -13,7 +13,7 @@
                 </div>
                 <input type="search" id="default-search"
                     class="block w-full p-3 ps-16 text-lg text-white rounded-sm dark:bg-[#212121] dark:placeholder-white dark:text-white"
-                    placeholder="絞込み検索" required />
+                    v-bind:placeholder="text" required />
             </div>
         </form>
     </div>
@@ -21,6 +21,12 @@
 
 <script>
 export default {
-    name: "Search"
+    name: "Search",
+    props: {
+        text: {
+            type: String,
+            required: true
+        }
+    }
 };
 </script>

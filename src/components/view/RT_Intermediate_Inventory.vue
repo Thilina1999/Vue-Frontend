@@ -9,7 +9,7 @@
     </div>
     <br />
     <div class="flex items-center space-x-2 flex-wrap">
-        <Search class="m-2" />
+        <Search class="m-2" text="絞込み検索" />
         <Page_Bar class="m-2" />
     </div>
     <br />
@@ -39,18 +39,11 @@ export default {
   },
   data() {
     return {
-      tableData: [],
       inventoryData: [],
       inventory_manufactures: []
     };
   },
   mounted() {
-    getInventory().then(res => {
-      this.tableData = res.data;
-    }).catch(err => {
-      console.error('Error fetching manufacturers:', err);
-    })
-
     getInventoryManufactures().then(res =>{
       this.inventory_manufactures = res.data;
     }).catch(err =>{

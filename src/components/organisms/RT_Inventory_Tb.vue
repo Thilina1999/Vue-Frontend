@@ -89,8 +89,6 @@ export default {
     async goToPage(page) {
       try {
         const res = await this.getInventoryPage(page, this.rowsPerPage);
-        console.log(res.data);
-
         this.internalData = res.data.data;
         this.currentPage = res.data.meta.page;
         this.totalPages = res.data.meta.total_pages;
