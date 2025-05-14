@@ -6,11 +6,7 @@
           <th class="summary-row border bg-yellow-500 border-gray-300 text-left px-2 py-3.5" colspan="4">
             工程合計
           </th>
-          <th
-            class="summary-row border bg-gray-300 border-gray-300 px-2 py-1"
-            v-for="i in 10"
-            :key="i"
-          >
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1" v-for="i in 10" :key="i">
             0
           </th>
         </tr>
@@ -34,11 +30,7 @@
       </thead>
 
       <tbody>
-        <tr
-          v-for="(row, index) in internalData"
-          :key="index"
-          class="bg-gray-300 text-black text-sm"
-        >
+        <tr v-for="(row, index) in internalData" :key="index" class="bg-gray-300 text-black text-sm">
           <td class="border border-gray-300 px-2 py-2">{{ row.メーカ }}</td>
           <td class="border border-gray-300 px-2 py-2">{{ row.ASSY品番 }}</td>
           <td class="border border-gray-300 px-2 py-2">{{ row.SUBASSY品番 }}</td>
@@ -59,39 +51,27 @@
   </div>
 
   <div class="m-4 flex justify-center space-x-2 text-black">
-    <button
-      class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300"
-      :disabled="currentPage === 1"
-      @click="goToPage(currentPage - 1)"
-    >
+    <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" :disabled="currentPage === 1"
+      @click="goToPage(currentPage - 1)">
       Prev
     </button>
 
-    <button
-      v-for="page in totalPages"
-      :key="page"
-      class="px-3 py-1 border rounded"
-      :class="{
-        'bg-gray-500 text-white': page === currentPage,
-        'bg-gray-200': page !== currentPage,
-      }"
-      @click="goToPage(page)"
-    >
+    <button v-for="page in totalPages" :key="page" class="px-3 py-1 border rounded" :class="{
+      'bg-gray-500 text-white': page === currentPage,
+      'bg-gray-200': page !== currentPage,
+    }" @click="goToPage(page)">
       {{ page }}
     </button>
 
-    <button
-      class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300"
-      :disabled="currentPage === totalPages"
-      @click="goToPage(currentPage + 1)"
-    >
+    <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" :disabled="currentPage === totalPages"
+      @click="goToPage(currentPage + 1)">
       Next
     </button>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 // Props
 const props = defineProps({
@@ -99,6 +79,9 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  manufacturer: [Object, String], // depends on your data
+  searchText: String,
+  shippingClassification: [Object, String],
 })
 
 // Data
@@ -123,4 +106,11 @@ const goToPage = async (page) => {
 onMounted(() => {
   goToPage(1)
 })
+
+watch(
+  () => [props.manufacturer, props.searchText, props.shippingClassification],
+  () => {
+    goToPage(1)
+  }
+)
 </script>

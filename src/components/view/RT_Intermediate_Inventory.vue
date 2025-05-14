@@ -26,12 +26,13 @@
     </div>
 
     <br />
-    <RT_Inventory_Tb :getInventoryPage="getInventoryPageData" />
+    <RT_Inventory_Tb :getInventoryPage="getInventoryPageData" :manufacturer="selectedManufacturer"
+      :searchText="searchText" :shippingClassification="selectedShippingClassification" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, watchEffect } from 'vue'
 import Title from '../atom/Title.vue'
 import Title_Text from '../atom/Title_Text.vue'
 import TimeFunction from '../molecules/TimeFunction.vue'
@@ -66,12 +67,13 @@ onMounted(() => {
 })
 
 watch(searchText, (newVal, oldVal) => {
-  console.log('Manufacturer changed:', newVal)
+  console.log(searchText.value)
 })
+
 // Methods
 const getInventoryPageData = async (page, perPage) => {
   try {
-    const res = await getInventoryPage(page, perPage)
+    const res = await getInventoryPage(page, perPage, selectedManufacturer.value, searchText.value, selectedShippingClassification.value)
     return res
   } catch (err) {
     console.error('Error fetching paginated inventory:', err)
@@ -86,4 +88,5 @@ const getInventoryPageData = async (page, perPage) => {
     }
   }
 }
+
 </script>
