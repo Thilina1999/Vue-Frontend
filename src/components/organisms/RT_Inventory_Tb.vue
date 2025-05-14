@@ -27,7 +27,7 @@
             </thead>
 
             <tbody>
-                <tr v-for="(row, index) in paginatedData" :key="index" class="bg-gray-300 text-black text-sm">
+                <tr v-for="(row, index) in internalData" :key="index" class="bg-gray-300 text-black text-sm">
                     <td class="border border-gray-300 px-2 py-2">{{ row.メーカ }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.ASSY品番 }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.SUBASSY品番 }}</td>
@@ -70,35 +70,39 @@
 
 <script>
 export default {
-    name: "Rt_Inventory_Tb",
-    props: {
-        tableData: {
-            type: Array,
-            required: true
-        }
-    },
-    data() {
-        return {
-            currentPage: 1,
-            rowsPerPage: 11
-        };
-    },
-    computed: {
-        paginatedData() {
-            const start = (this.currentPage - 1) * this.rowsPerPage;
-            const end = start + this.rowsPerPage;
-            return this.tableData.slice(start, end);
-        },
-        totalPages() {
-            return Math.ceil(this.tableData.length / this.rowsPerPage);
-        }
-    },
-    methods: {
-        goToPage(page) {
-            if (page >= 1 && page <= this.totalPages) {
-                this.currentPage = page;
-            }
-        }
+  name: "Rt_Inventory_Tb",
+  props: {
+    getInventoryPage: {
+      type: Function,
+      required: true
     }
+  },
+  data() {
+    return {
+      currentPage: 1,
+      rowsPerPage: 10,
+      totalPages: 1,
+      internalData: []
+    };
+  },
+  methods: {
+    async goToPage(page) {
+      try {
+        const res = await this.getInventoryPage(page, this.rowsPerPage);
+        console.log(res.data);
+
+        this.internalData = res.data.data;
+        this.currentPage = res.data.meta.page;
+        this.totalPages = res.data.meta.total_pages;
+
+      } catch (err) {
+        console.error("Failed to fetch inventory data:", err);
+      }
+    }
+  },
+  mounted() {
+    this.goToPage(1);
+  }
 };
 </script>
+
