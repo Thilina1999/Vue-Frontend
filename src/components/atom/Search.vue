@@ -1,47 +1,30 @@
 <template>
   <div>
-    <form class="w-54">
-      <label
-        for="default-search"
-        class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-      >
+    <form class="w-full">
+      <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
         Search
       </label>
       <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <svg
-            class="w-6 h-6 text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
-        </div>
-        <input
-          type="search"
-          id="default-search"
-          class="block w-full p-3 ps-16 text-lg text-white rounded-sm dark:bg-[#212121] dark:placeholder-white dark:text-white"
-          :placeholder="text"
-          required
-        />
+        <input type="search" id="default-search"
+          class="block w-full p-3 text-lg text-white rounded-sm dark:bg-[#212121] dark:placeholder-white dark:text-white"
+          :placeholder="text" v-model="searchValue" @input="emit('update:modelValue', searchValue)" required />
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { ref } from 'vue'
+
+const props = defineProps({
   text: {
     type: String,
     required: true
-  }
+  },
+  modelValue: String
 })
+
+const emit = defineEmits(['update:modelValue'])
+
+const searchValue = ref(props.modelValue || '')
 </script>

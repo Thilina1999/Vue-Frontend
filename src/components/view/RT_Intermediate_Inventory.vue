@@ -8,28 +8,45 @@
       <Title_Text class="text-lg" text="更新頻度:" />
     </div>
     <br />
-    <div class="flex items-center space-x-2 flex-wrap">
-      <Search class="m-2" text="絞込み検索" />
-      <Page_Bar class="m-2" />
+    <div class="grid grid-cols-8 items-center gap-4 flex-wrap">
+      <div class="col-span-1">
+        <Search_Title />
+      </div>
+      <div class="col-span-2">
+        <Page_Bar class="w-full" :dataTransfer="inventoryManufactures" v-model="selectedManufacturer" text="メーカー" />
+      </div>
+      <div class="col-span-2">
+        <Search class="w-full" v-model="searchText" text="品番" />
+      </div>
+      <div class="col-span-2">
+        <Page_Bar class="w-full" :dataTransfer="shippingClassification" v-model="selectedShippingClassification"
+          text="出荷区分" />
+      </div>
+      <div class="col-span-1"></div>
     </div>
+
     <br />
     <RT_Inventory_Tb :getInventoryPage="getInventoryPageData" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Title from '../atom/Title.vue'
 import Title_Text from '../atom/Title_Text.vue'
 import TimeFunction from '../molecules/TimeFunction.vue'
 import RT_Inventory_Tb from '../organisms/RT_Inventory_Tb.vue'
 import Page_Bar from '../atom/Page_Bar.vue'
 import Search from '../atom/Search.vue'
-import { getInventoryPage, getInventoryManufactures } from '../../service/inventory'
+import Search_Title from '../atom/Search_Title.vue'
+import { getInventoryPage, getInventoryManufactures, getInventoryShippingClassification } from '../../service/inventory'
 
 // Refs
-const inventoryData = ref([])
+const selectedManufacturer = ref(null)
 const inventoryManufactures = ref([])
+const shippingClassification = ref([])
+const selectedShippingClassification = ref(null)
+const searchText = ref('')
 
 // Lifecycle hook
 onMounted(() => {
@@ -40,8 +57,17 @@ onMounted(() => {
     .catch(err => {
       console.error('Error extracting data', err)
     })
+
+  getInventoryShippingClassification().then(res => {
+    shippingClassification.value = res.data
+  }).catch(err => {
+    console.error('Error extracting data', err)
+  })
 })
 
+watch(searchText, (newVal, oldVal) => {
+  console.log('Manufacturer changed:', newVal)
+})
 // Methods
 const getInventoryPageData = async (page, perPage) => {
   try {
@@ -61,5 +87,3 @@ const getInventoryPageData = async (page, perPage) => {
   }
 }
 </script>
-
-<style scoped></style>

@@ -2,9 +2,9 @@
   <Menu as="div" class="relative inline-block text-left">
     <div>
       <MenuButton
-        class="inline-flex w-full justify-center gap-x-8 rounded-sm bg-[#212121] px-6 py-3 text-lg font-semibold text-white shadow-xs ring-inset"
+        class="inline-flex w-full justify-center gap-x-16 rounded-sm bg-[#212121] px-6 py-3 text-lg text-white shadow-xs ring-inset"
       >
-        出荷区分
+        {{ selectedLabel }}
         <ChevronDownIcon class="-mr-1 size-5 text-gray-400" aria-hidden="true" />
       </MenuButton>
     </div>
@@ -18,41 +18,23 @@
       leave-to-class="transform opacity-0 scale-95"
     >
       <MenuItems
-        class="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#212121] shadow-lg ring-1 ring-black/5 focus:outline-hidden"
+        class="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#212121] shadow-lg ring-1 ring-black/5 focus:outline-none"
       >
         <div class="py-1">
-          <MenuItem v-slot="{ active }">
-            <a
-              href="#"
-              :class="[
-                active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-white',
-                'block px-4 py-2 text-sm'
-              ]"
-            >
-              Account settings
-            </a>
+          <MenuItem v-slot="{ active }" @click="selectSelectedData(null)">
+            <span :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block px-4 py-2 text-sm']">
+              {{ text }}
+            </span>
           </MenuItem>
-          <MenuItem v-slot="{ active }">
-            <a
-              href="#"
-              :class="[
-                active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-white',
-                'block px-4 py-2 text-sm'
-              ]"
-            >
-              Support
-            </a>
-          </MenuItem>
-          <MenuItem v-slot="{ active }">
-            <a
-              href="#"
-              :class="[
-                active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-white',
-                'block px-4 py-2 text-sm'
-              ]"
-            >
-              License
-            </a>
+          <MenuItem
+            v-for="item in dataTransfer"
+            :key="item"
+            v-slot="{ active }"
+            @click="selectSelectedData(item)"
+          >
+            <span :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block px-4 py-2 text-sm']">
+              {{ item }}
+            </span>
           </MenuItem>
         </div>
       </MenuItems>
@@ -61,6 +43,24 @@
 </template>
 
 <script setup>
+import { ref, computed, watch } from 'vue'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+
+const props = defineProps({
+  dataTransfer: {
+    type: Array,
+    required: true
+  },
+  modelValue: String,
+  text: String
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const selectedLabel = computed(() => props.modelValue || props.text)
+
+function selectSelectedData(value) {
+  emit('update:modelValue', value)
+}
 </script>
