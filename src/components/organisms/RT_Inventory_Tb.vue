@@ -6,8 +6,35 @@
           <th class="summary-row border bg-yellow-500 border-gray-300 text-left px-2 py-3.5" colspan="4">
             工程合計
           </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1" v-for="i in 10" :key="i">
-            0
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.気密検査 }}
+          </th>
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.SCU }}
+          </th>
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.水蒸気検査 }}
+          </th>
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.特性検査 }}
+          </th>
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.特性検査端数品 }}
+          </th>
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.アクセサリ }}
+          </th>
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.FA }}
+          </th>
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.FA端数品 }}
+          </th>
+          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
+            {{ summary.外観検査 }}
+          </th>
+
+          <th class="summary-row border bg-black px-2 py-1">
           </th>
         </tr>
 
@@ -89,12 +116,14 @@ const currentPage = ref(1)
 const rowsPerPage = ref(11)
 const totalPages = ref(1)
 const internalData = ref([])
+const summary = ref([])
 
 // Methods
 const goToPage = async (page) => {
   try {
     const res = await props.getInventoryPage(page, rowsPerPage.value)
     internalData.value = res.data.data
+    summary.value = res.data.summary
     currentPage.value = res.data.meta.page
     totalPages.value = res.data.meta.total_pages
   } catch (err) {

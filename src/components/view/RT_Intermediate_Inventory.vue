@@ -69,10 +69,6 @@ onMounted(() => {
   })
 })
 
-watch(searchText, (newVal, oldVal) => {
-  console.log(searchText.value)
-})
-
 // Methods
 const getInventoryPageData = async (page, perPage) => {
   try {
