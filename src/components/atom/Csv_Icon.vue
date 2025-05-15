@@ -1,12 +1,14 @@
 <template>
     <div>
         <form class="w-full">
-            <div class="relative flex justify-end">
+            <div class="justify-end">
                 <button type="button" @click="handleClick"
-                    class="absolute inset-y-0 end-0 flex items-center pe-3 cursor-pointer">
-                    <h1 class="text-white text-end pr-4 block w-full p-1 text-lg font-semibold">CSV出力</h1>
-                    <Csv class="h-8 w-8 text-blue-500 hover:text-blue-700 transition" />
+                    class="flex items-center text-white cursor-pointer font-semibold rounded-sm  p-2.5 bg-[#113f66] transition-transform duration-300 hover:scale-102">
+                    CSV出力
+                    <Csv class="h-8 w-8 text-white" />
                 </button>
+
+
             </div>
         </form>
     </div>

@@ -86,7 +86,7 @@ const props = defineProps({
 
 // Data
 const currentPage = ref(1)
-const rowsPerPage = ref(10)
+const rowsPerPage = ref(11)
 const totalPages = ref(1)
 const internalData = ref([])
 

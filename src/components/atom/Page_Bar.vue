@@ -2,7 +2,7 @@
   <Menu as="div" class="relative inline-block text-left">
     <div>
       <MenuButton
-        class="inline-flex w-full justify-center gap-x-16 rounded-sm bg-[#212121] px-6 py-3 text-lg text-white shadow-xs ring-inset"
+        class="cursor-pointer inline-flex w-full justify-center gap-x-16 rounded-sm bg-[#212121] px-6 py-3 text-lg text-white shadow-xs ring-inset"
       >
         {{ selectedLabel }}
         <ChevronDownIcon class="-mr-1 size-5 text-gray-400" aria-hidden="true" />

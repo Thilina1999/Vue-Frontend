@@ -22,7 +22,7 @@
         <Page_Bar class="w-full" :dataTransfer="shippingClassification" v-model="selectedShippingClassification"
           text="出荷区分" />
       </div>
-      <div class="col-span-1 content-end">
+      <div class="flex col-span-1 justify-end">
         <Csv_Icon :handleClick="handleClick" />
       </div>
     </div>

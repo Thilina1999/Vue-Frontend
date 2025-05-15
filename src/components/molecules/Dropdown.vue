@@ -35,18 +35,22 @@ defineOptions({
 
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { options } from '../constant/NavMenue'
 
-const selectedOption = ref('リアルタイム中間在庫画面')
+const STORAGE_KEY = 'selectedDropdownOption'
+const selectedOption = ref(localStorage.getItem(STORAGE_KEY) || 'リアルタイム中間在庫画面')
 
 const router = useRouter()
-
 
 function selectOption(label, route) {
     selectedOption.value = label
     router.push(route)
 }
 
+// Persist selection in localStorage
+watch(selectedOption, (newVal) => {
+    localStorage.setItem(STORAGE_KEY, newVal)
+})
 </script>
