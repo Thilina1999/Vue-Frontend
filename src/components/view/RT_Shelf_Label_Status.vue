@@ -1,11 +1,8 @@
-<script setup>
-</script>
-
 <template>
     <p class="text-white">new</p>
 
 </template>
 
-<style>
+<script setup>
 
-</style>
+</script>

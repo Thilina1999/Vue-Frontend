@@ -22,7 +22,9 @@
         <Page_Bar class="w-full" :dataTransfer="shippingClassification" v-model="selectedShippingClassification"
           text="出荷区分" />
       </div>
-      <div class="col-span-1"></div>
+      <div class="col-span-1 content-end">
+        <Csv_Icon :handleClick="handleClick" />
+      </div>
     </div>
 
     <br />
@@ -40,7 +42,8 @@ import RT_Inventory_Tb from '../organisms/RT_Inventory_Tb.vue'
 import Page_Bar from '../atom/Page_Bar.vue'
 import Search from '../atom/Search.vue'
 import Search_Title from '../atom/Search_Title.vue'
-import { getInventoryPage, getInventoryManufactures, getInventoryShippingClassification } from '../../service/inventory'
+import Csv_Icon from '../atom/Csv_Icon.vue'
+import { getInventoryPage, getInventoryManufactures, getInventoryShippingClassification, getInventory } from '../../service/inventory'
 
 // Refs
 const selectedManufacturer = ref(null)
@@ -88,5 +91,58 @@ const getInventoryPageData = async (page, perPage) => {
     }
   }
 }
+
+const convertToCSV = (rows) => {
+  const headers = [
+    'ASSY品番', 'SUBASSY品番', 'メーカ',
+    '出荷区分', '気密検査', 'SCU',
+    '水蒸気検査', '特性検査',
+    '特性検査端数品', 'アクセサリ', 'FA',
+    'FA端数品', '外観検査', '更新日時'
+  ]
+  const csvContent = [
+    headers.join(','),  
+    ...rows.map(row =>
+      headers.map(h => `"${(row[h] ?? '').toString().replace(/"/g, '""')}"`).join(',')
+    )
+  ]
+  return csvContent.join('\n')
+}
+
+
+// Create Blob and trigger browser download
+const downloadCSV = (csv, filename) => {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+  const link = document.createElement('a')
+  const url = URL.createObjectURL(blob)
+  link.setAttribute('href', url)
+  link.setAttribute('download', filename)
+  link.style.visibility = 'hidden'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+const handleClick = async () => {
+  try {
+    const response = await getInventory()
+    const data = response.data || []
+
+    if (!data.length) {
+      console.warn('No data to export.')
+      return
+    }
+
+    // Convert JSON to CSV
+    const csv = convertToCSV(data)
+
+    // Trigger download
+    downloadCSV(csv, 'inventory_export.csv')
+  } catch (error) {
+    console.error('Error fetching inventory data:', error)
+  }
+}
+
+// Convert array of objects to CSV string
 
 </script>
