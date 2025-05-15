@@ -39,20 +39,20 @@
         </tr>
 
         <tr class="bg-gray-500 h-12 text-sm">
-          <th class="border border-gray-300 px-2 py-2">メーカー</th>
-          <th class="border border-gray-300 px-2 py-2">ASSY品番</th>
-          <th class="border border-gray-300 px-2 py-2">SUBASSY品番</th>
-          <th class="border border-gray-300 px-2 py-2">出荷区分</th>
-          <th class="border border-gray-300 px-2 py-2">気密検査</th>
-          <th class="border border-gray-300 px-2 py-2">SCU</th>
-          <th class="border border-gray-300 px-2 py-2">水蒸気検査</th>
-          <th class="border border-gray-300 px-2 py-2">特性検査</th>
-          <th class="border border-gray-300 px-2 py-2">特性検査端数品</th>
-          <th class="border border-gray-300 px-2 py-2">アクセサリ</th>
-          <th class="border border-gray-300 px-2 py-2">FA</th>
-          <th class="border border-gray-300 px-2 py-2">FA端数品</th>
-          <th class="border border-gray-300 px-2 py-2">外観検査</th>
-          <th class="border border-gray-300 px-2 py-2">品番合計</th>
+          <th class="px-2 py-2">メーカー</th>
+          <th class="px-2 py-2">ASSY品番</th>
+          <th class="px-2 py-2">SUBASSY品番</th>
+          <th class="px-2 py-2">出荷区分</th>
+          <th class="px-2 py-2">気密検査</th>
+          <th class="px-2 py-2">SCU</th>
+          <th class="px-2 py-2">水蒸気検査</th>
+          <th class="px-2 py-2">特性検査</th>
+          <th class="px-2 py-2">特性検査端数品</th>
+          <th class="px-2 py-2">アクセサリ</th>
+          <th class="px-2 py-2">FA</th>
+          <th class="px-2 py-2">FA端数品</th>
+          <th class="px-2 py-2">外観検査</th>
+          <th class="bg-yellow-500 px-2 py-2">品番合計</th>
         </tr>
       </thead>
 

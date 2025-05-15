@@ -3,15 +3,15 @@
         <table class="w-full table-auto border-separate border rounded-sm bg-white border-gray-500 text-white">
             <thead class="bg-white">
                 <tr class="bg-gray-500 h-12 text-sm">
-                    <th class="border border-gray-300 px-2 py-2">棚札ID</th>
-                    <th class="border border-gray-300 px-2 py-2">品番</th>
-                    <th class="border border-gray-300 px-2 py-2">次工程名称</th>
-                    <th class="border border-gray-300 px-2 py-2">加工Lot</th>
-                    <th class="border border-gray-300 px-2 py-2">数量</th>
-                    <th class="border border-gray-300 px-2 py-2">作業状況</th>
-                    <th class="border border-gray-300 px-2 py-2">棚札登録日時</th>
-                    <th class="border border-gray-300 px-2 py-2">棚札更新日時</th>
-                    <th class="border border-gray-300 px-2 py-2">滞留日数</th>
+                    <th class="px-2 py-2">棚札ID</th>
+                    <th class="px-2 py-2">品番</th>
+                    <th class="px-2 py-2">次工程名称</th>
+                    <th class="px-2 py-2">加工Lot</th>
+                    <th class="px-2 py-2">数量</th>
+                    <th class="px-2 py-2">作業状況</th>
+                    <th class="px-2 py-2">棚札登録日時</th>
+                    <th class="px-2 py-2">棚札更新日時</th>
+                    <th class="px-2 py-2">滞留日数</th>
                 </tr>
             </thead>
 
