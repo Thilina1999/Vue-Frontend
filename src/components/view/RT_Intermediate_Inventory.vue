@@ -8,7 +8,7 @@
       <Title_Text class="text-lg" text="更新頻度:" />
     </div>
     <br />
-    <div class="grid grid-cols-8 items-center gap-4 flex-wrap">
+    <div class="grid grid-cols-8 items-center gap-3 flex-wrap">
       <div class="col-span-1">
         <Search_Title />
       </div>

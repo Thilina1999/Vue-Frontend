@@ -20,7 +20,7 @@
       <MenuItems
         class="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#212121] shadow-lg ring-1 ring-black/5 focus:outline-none"
       >
-        <div class="py-1">
+        <div class="max-h-72 overflow-y-auto">
           <MenuItem v-slot="{ active }" @click="selectSelectedData(null)">
             <span :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block px-4 py-2 text-sm']">
               {{ text }}

@@ -22,10 +22,22 @@
                     <td class="border border-gray-300 px-2 py-2">{{ row.次工程名称 }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.加工Lot }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.数量 }}</td>
-                    <td class="border border-gray-300 px-2 py-2">{{ row.作業状況 }}</td>
+                    <td class="border border-gray-300 px-2 py-2" :class="{
+                        'bg-gray-400 text-white': row.作業状況 === 0,
+                        'bg-white text-black': row.作業状況 === 1,
+                        'bg-black text-white': row.作業状況 === 2,
+                        'bg-red-500 text-white': row.作業状況 === 3
+                    }">
+                        {{ row.作業状況 }}
+                    </td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.棚札登録日時 }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.棚札更新日時 }}</td>
-                    <td class="border border-gray-300 px-2 py-2">{{ row.滞留日数 }}</td>
+                    <td class="border border-gray-300 px-2 py-2" :class="{
+                        'bg-yellow-500 text-white': row.滞留日数 >= 120 && row.滞留日数 <= 149,
+                        'bg-red-500 text-black': row.滞留日数 >= 150,
+                    }">
+                        {{ row.滞留日数 }}
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -38,13 +50,13 @@
         </button>
 
         <template v-for="page in paginationRange" :key="page">
-            <button v-if="page !== '...'" class="px-3 py-1 border rounded" :class="{
+            <button v-if="page !== '....'" class="px-3 py-1 border rounded" :class="{
                 'bg-gray-500 text-white': page === currentPage,
                 'bg-gray-200': page !== currentPage,
             }" @click="goToPage(page)">
                 {{ page }}
             </button>
-            <span v-else class="text-white px-3 py-1">...</span>
+            <span v-else class="text-white px-3 py-1">....</span>
         </template>
 
         <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" :disabled="currentPage === totalPages"
@@ -87,7 +99,7 @@ const goToPage = async (page) => {
 const paginationRange = computed(() => {
     const total = totalPages.value
     const current = currentPage.value
-    const delta = 2
+    const delta = 4
     const range = []
     const rangeWithDots = []
 
@@ -102,9 +114,9 @@ const paginationRange = computed(() => {
     const end = Math.min(total - 1, current + delta)
 
     range.push(1)
-    if (start > 2) range.push('...')
+    if (start > 2) range.push('....')
     for (let i = start; i <= end; i++) range.push(i)
-    if (end < total - 1) range.push('...')
+    if (end < total - 1) range.push('....')
     range.push(total)
 
     return range

@@ -83,12 +83,15 @@
       Prev
     </button>
 
-    <button v-for="page in totalPages" :key="page" class="px-3 py-1 border rounded" :class="{
-      'bg-gray-500 text-white': page === currentPage,
-      'bg-gray-200': page !== currentPage,
-    }" @click="goToPage(page)">
-      {{ page }}
-    </button>
+    <template v-for="page in paginationRange" :key="page">
+      <button v-if="page !== '...'" class="px-3 py-1 border rounded" :class="{
+        'bg-gray-500 text-white': page === currentPage,
+        'bg-gray-200': page !== currentPage,
+      }" @click="goToPage(page)">
+        {{ page }}
+      </button>
+      <span v-else class="text-white px-3 py-1">...</span>
+    </template>
 
     <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" :disabled="currentPage === totalPages"
       @click="goToPage(currentPage + 1)">
@@ -98,7 +101,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 
 // Props
 const props = defineProps({
@@ -131,6 +134,31 @@ const goToPage = async (page) => {
   }
 }
 
+const paginationRange = computed(() => {
+  const total = totalPages.value
+  const current = currentPage.value
+  const delta = 3
+  const range = []
+  const rangeWithDots = []
+
+  if (total <= 8) {
+    for (let i = 1; i <= total; i++) {
+      range.push(i)
+    }
+    return range
+  }
+
+  const start = Math.max(2, current - delta)
+  const end = Math.min(total - 1, current + delta)
+
+  range.push(1)
+  if (start > 2) range.push('...')
+  for (let i = start; i <= end; i++) range.push(i)
+  if (end < total - 1) range.push('...')
+  range.push(total)
+
+  return range
+})
 // Lifecycle hooks
 onMounted(() => {
   goToPage(1)

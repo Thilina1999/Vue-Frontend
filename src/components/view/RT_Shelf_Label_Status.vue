@@ -8,9 +8,24 @@
             <Title_Text class="text-lg" text="更新頻度:" />
         </div>
         <br />
-        <div class="grid grid-cols-8 items-center gap-4 flex-wrap">
+        <div class="grid grid-cols-10 items-center gap-3 flex-wrap">
             <div class="col-span-1">
                 <Search_Title />
+            </div>
+            <div class="col-span-2">
+                <Search text="棚札ID" />
+            </div>
+            <div class="col-span-2">
+                <Search text="品番" />
+            </div>
+            <div class="col-span-2">
+                <Page_Bar class="w-full" :dataTransfer="subproject" text="次工程名称" />
+            </div>
+            <div class="col-span-2">
+                <Page_Bar class="w-full" text="作業状況" />
+            </div>
+            <div class="flex col-span-1 justify-end">
+                <Csv_Icon />
             </div>
         </div>
         <br />
@@ -19,12 +34,28 @@
 </template>
 
 <script setup>
+import { ref, onMounted, watch, watchEffect } from 'vue'
 import Title from '../atom/Title.vue';
 import Title_Text from '../atom/Title_Text.vue'
 import TimeFunction from '../molecules/TimeFunction.vue'
 import Search_Title from '../atom/Search_Title.vue';
-import { getStatusPage } from '../../service/status';
+import Search from '../atom/Search.vue';
+import Page_Bar from '../atom/Page_Bar.vue';
+import Csv_Icon from '../atom/Csv_Icon.vue';
+import { getStatusPage, getSubproject } from '../../service/status';
 import RT_Status_Tb from '../organisms/RT_Status_Tb.vue';
+
+const subproject = ref([])
+
+onMounted(() => {
+  getSubproject()
+    .then(res => {
+      subproject.value = res.data
+    })
+    .catch(err => {
+      console.error('Error extracting data', err)
+    })
+})
 
 const getStatusPageData = async (page, perPage) => {
     try {
