@@ -5,7 +5,10 @@
             <Title title="リアルタイム棚札ステータス" />
             <Title_Text class="text-lg" text="最終更新日時" />
             <TimeFunction class="text-lg" />
-            <Title_Text class="text-lg" text="更新頻度:" />
+            <Title_Text class="text-lg" :text="`更新頻度: ${refreshKey} 分`" />
+            <button type="button" @click="handleRefresh">
+                <Refresh class="h-6 w-6 cursor-pointer" />
+            </button>
         </div>
         <br />
         <div class="grid grid-cols-10 items-center gap-3 flex-wrap">
@@ -30,7 +33,7 @@
         </div>
         <br />
         <RT_Status_Tb :getStatusPage="getStatusPageData" :tanafuda_id="tanafuda_id" :product_number="product_number"
-            :next_process_name="next_process_name" :work_status="work_status" />
+            :next_process_name="next_process_name" :work_status="work_status" :key="refreshKey" />
     </div>
 </template>
 
@@ -45,6 +48,9 @@ import Page_Bar from '../atom/Page_Bar.vue';
 import Csv_Icon from '../atom/Csv_Icon.vue';
 import { getStatusPage, getSubproject, getStatus } from '../../service/status';
 import RT_Status_Tb from '../organisms/RT_Status_Tb.vue';
+import { loadConfig } from '../../utils/config'
+import Refresh from '../../../public/assets/Refresh.vue';
+import { refreshTbale, resetTimer } from '../../utils/refreshFunc'
 
 const subproject = ref([])
 const status_all = ref([])
@@ -52,6 +58,9 @@ const tanafuda_id = ref('')
 const product_number = ref('')
 const next_process_name = ref(null)
 const work_status = ref(null)
+const refreshIntervalSeconds = ref(10)
+const refreshKey = ref(0)
+const intervalId = ref(null)
 
 onMounted(() => {
     getSubproject()
@@ -70,6 +79,13 @@ onMounted(() => {
         .catch(err => {
             console.error('Error extracting data', err);
         });
+
+    loadConfig(import.meta.env.VITE_STATUS).then(res => {
+        refreshIntervalSeconds.value = res
+        handleRefresh();
+    }).catch(err => {
+        console.error(err)
+    })
 
 })
 
@@ -90,4 +106,11 @@ const getStatusPageData = async (page, perPage) => {
         }
     }
 }
+
+const handleRefresh = () => {
+  refreshTbale(refreshKey, () =>
+    resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
+  )
+}
+
 </script>

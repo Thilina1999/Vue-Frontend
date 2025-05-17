@@ -1,40 +1,40 @@
-<template>
-  <div class="element">
-    <br />
-    <div class="flex items-center space-x-4">
-      <Title title="リアルタイム中間在庫" />
-      <Title_Text class="text-lg" text="最終更新日時" />
-      <TimeFunction class="text-lg" />
-      <Title_Text class="text-lg" :text="`更新頻度:  ${inventoryKey} 分`" />
-      <button type="button" @click="refreshInventory">
-        <Refresh class="h-6 w-6 cursor-pointer" />
-      </button>
-    </div>
-    <br />
-    <div class="grid grid-cols-8 items-center gap-3 flex-wrap">
-      <div class="col-span-1">
-        <Search_Title />
+  <template>
+    <div class="element">
+      <br />
+      <div class="flex items-center space-x-4">
+        <Title title="リアルタイム中間在庫" />
+        <Title_Text class="text-lg" text="最終更新日時" />
+        <TimeFunction class="text-lg" />
+        <Title_Text class="text-lg" :text="`更新頻度:  ${inventoryKey} 分`" />
+        <button type="button" @click="handleRefresh">
+          <Refresh class="h-6 w-6 cursor-pointer" />
+        </button>
       </div>
-      <div class="col-span-2">
-        <Page_Bar class="w-full" :dataTransfer="inventoryManufactures" v-model="selectedManufacturer" text="メーカー" />
+      <br />
+      <div class="grid grid-cols-8 items-center gap-3 flex-wrap">
+        <div class="col-span-1">
+          <Search_Title />
+        </div>
+        <div class="col-span-2">
+          <Page_Bar class="w-full" :dataTransfer="inventoryManufactures" v-model="selectedManufacturer" text="メーカー" />
+        </div>
+        <div class="col-span-2">
+          <Search class="w-full" v-model="searchText" text="品番" />
+        </div>
+        <div class="col-span-2">
+          <Page_Bar class="w-full" :dataTransfer="shippingClassification" v-model="selectedShippingClassification"
+            text="出荷区分" />
+        </div>
+        <div class="flex col-span-1 justify-end">
+          <Csv_Icon :handleClick="handleClick" />
+        </div>
       </div>
-      <div class="col-span-2">
-        <Search class="w-full" v-model="searchText" text="品番" />
-      </div>
-      <div class="col-span-2">
-        <Page_Bar class="w-full" :dataTransfer="shippingClassification" v-model="selectedShippingClassification"
-          text="出荷区分" />
-      </div>
-      <div class="flex col-span-1 justify-end">
-        <Csv_Icon :handleClick="handleClick" />
-      </div>
-    </div>
 
-    <br />
-    <RT_Inventory_Tb :getInventoryPage="getInventoryPageData" :manufacturer="selectedManufacturer"
-      :searchText="searchText" :shippingClassification="selectedShippingClassification" :key="inventoryKey" />
-  </div>
-</template>
+      <br />
+      <RT_Inventory_Tb :getInventoryPage="getInventoryPageData" :manufacturer="selectedManufacturer"
+        :searchText="searchText" :shippingClassification="selectedShippingClassification" :key="inventoryKey" />
+    </div>
+  </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -49,6 +49,7 @@ import Csv_Icon from '../atom/Csv_Icon.vue'
 import { getInventoryPage, getInventoryManufactures, getInventoryShippingClassification, getInventory } from '../../service/inventory'
 import Refresh from '../../../public/assets/Refresh.vue'
 import { loadConfig } from '../../utils/config'
+import { refreshTbale, resetTimer } from '../../utils/refreshFunc'
 
 // Refs
 const selectedManufacturer = ref(null)
@@ -56,7 +57,7 @@ const inventoryManufactures = ref([])
 const shippingClassification = ref([])
 const selectedShippingClassification = ref(null)
 const searchText = ref('')
-const refreshIntervalSeconds = ref(60)
+const refreshIntervalSeconds = ref(10)
 const inventoryKey = ref(0)
 const intervalId = ref(null)
 
@@ -78,7 +79,7 @@ onMounted(() => {
 
   loadConfig(import.meta.env.VITE_INVENTORY).then(res => {
     refreshIntervalSeconds.value = res
-    refreshInventory();
+    handleRefresh();
   }).catch(err => {
     console.error(err)
   })
@@ -152,16 +153,11 @@ const handleClick = async () => {
   }
 }
 
-const refreshInventory = () => {
-  inventoryKey.value++ // Force re-render
-  resetTimer()
+const handleRefresh = () => {
+  refreshTbale(inventoryKey, () =>
+    resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
+  )
 }
 
-const resetTimer = () => {
-  if (intervalId.value) clearInterval(intervalId.value)
-  intervalId.value = setInterval(() => {
-    refreshInventory()
-  }, refreshIntervalSeconds.value * 1000)
-}
 
 </script>
