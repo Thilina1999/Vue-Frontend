@@ -5,7 +5,10 @@
       <Title title="リアルタイム中間在庫" />
       <Title_Text class="text-lg" text="最終更新日時" />
       <TimeFunction class="text-lg" />
-      <Title_Text class="text-lg" text="更新頻度:" />
+      <Title_Text class="text-lg" :text="`更新頻度:  ${inventoryKey} 分`" />
+      <button type="button" @click="refreshInventory">
+        <Refresh class="h-6 w-6 cursor-pointer" />
+      </button>
     </div>
     <br />
     <div class="grid grid-cols-8 items-center gap-3 flex-wrap">
@@ -29,12 +32,12 @@
 
     <br />
     <RT_Inventory_Tb :getInventoryPage="getInventoryPageData" :manufacturer="selectedManufacturer"
-      :searchText="searchText" :shippingClassification="selectedShippingClassification" />
+      :searchText="searchText" :shippingClassification="selectedShippingClassification" :key="inventoryKey" />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, watchEffect } from 'vue'
+import { ref, onMounted } from 'vue'
 import Title from '../atom/Title.vue'
 import Title_Text from '../atom/Title_Text.vue'
 import TimeFunction from '../molecules/TimeFunction.vue'
@@ -44,6 +47,8 @@ import Search from '../atom/Search.vue'
 import Search_Title from '../atom/Search_Title.vue'
 import Csv_Icon from '../atom/Csv_Icon.vue'
 import { getInventoryPage, getInventoryManufactures, getInventoryShippingClassification, getInventory } from '../../service/inventory'
+import Refresh from '../../../public/assets/Refresh.vue'
+import { loadConfig } from '../../utils/config'
 
 // Refs
 const selectedManufacturer = ref(null)
@@ -51,6 +56,9 @@ const inventoryManufactures = ref([])
 const shippingClassification = ref([])
 const selectedShippingClassification = ref(null)
 const searchText = ref('')
+const refreshIntervalSeconds = ref(60)
+const inventoryKey = ref(0)
+const intervalId = ref(null)
 
 // Lifecycle hook
 onMounted(() => {
@@ -67,6 +75,14 @@ onMounted(() => {
   }).catch(err => {
     console.error('Error extracting data', err)
   })
+
+  loadConfig(import.meta.env.VITE_INVENTORY).then(res => {
+    refreshIntervalSeconds.value = res
+    refreshInventory();
+  }).catch(err => {
+    console.error(err)
+  })
+
 })
 
 // Methods
@@ -97,14 +113,13 @@ const convertToCSV = (rows) => {
     'FA端数品', '外観検査', '更新日時'
   ]
   const csvContent = [
-    headers.join(','),  
+    headers.join(','),
     ...rows.map(row =>
       headers.map(h => `"${(row[h] ?? '').toString().replace(/"/g, '""')}"`).join(',')
     )
   ]
   return csvContent.join('\n')
 }
-
 
 // Create Blob and trigger browser download
 const downloadCSV = (csv, filename) => {
@@ -128,10 +143,8 @@ const handleClick = async () => {
       console.warn('No data to export.')
       return
     }
-
     // Convert JSON to CSV
     const csv = convertToCSV(data)
-
     // Trigger download
     downloadCSV(csv, 'inventory_export.csv')
   } catch (error) {
@@ -139,6 +152,16 @@ const handleClick = async () => {
   }
 }
 
-// Convert array of objects to CSV string
+const refreshInventory = () => {
+  inventoryKey.value++ // Force re-render
+  resetTimer()
+}
+
+const resetTimer = () => {
+  if (intervalId.value) clearInterval(intervalId.value)
+  intervalId.value = setInterval(() => {
+    refreshInventory()
+  }, refreshIntervalSeconds.value * 1000)
+}
 
 </script>

@@ -1,8 +1,9 @@
 // src/api/api.js
 import axios from 'axios';
+const url = import.meta.env.VITE_API_BASE_URL
 
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/',  // Your Flask API base URL
+  baseURL: url,  // Your Flask API base URL
   headers: {
     'Content-Type': 'application/json'
   },
