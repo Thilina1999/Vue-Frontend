@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 
 // Props
 const props = defineProps({
@@ -75,6 +75,10 @@ const props = defineProps({
         type: Function,
         required: true,
     },
+    next_process_name: [Object, String], // depends on your data
+    tanafuda_id: String,
+    product_number: String,
+    work_status: [Object, String],
 })
 
 // Data
@@ -126,4 +130,11 @@ const paginationRange = computed(() => {
 onMounted(() => {
     goToPage(1)
 })
+
+watch(
+    () => [props.next_process_name, props.tanafuda_id, props.work_status, props.product_number],
+    () => {
+        goToPage(1)
+    }
+)
 </script>

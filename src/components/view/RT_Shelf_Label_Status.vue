@@ -13,28 +13,29 @@
                 <Search_Title />
             </div>
             <div class="col-span-2">
-                <Search text="棚札ID" />
+                <Search class="w-full" text="棚札ID" v-model="tanafuda_id" />
             </div>
             <div class="col-span-2">
-                <Search text="品番" />
+                <Search class="w-full" text="品番" v-model="product_number" />
             </div>
             <div class="col-span-2">
-                <Page_Bar class="w-full" :dataTransfer="subproject" text="次工程名称" />
+                <Page_Bar class="w-full" :dataTransfer="subproject" text="次工程名称" v-model="next_process_name" />
             </div>
             <div class="col-span-2">
-                <Page_Bar class="w-full" :dataTransfer="status_all" text="作業状況" />
+                <Page_Bar class="w-full" :dataTransfer="status_all" text="作業状況" v-model="work_status" />
             </div>
             <div class="flex col-span-1 justify-end">
                 <Csv_Icon />
             </div>
         </div>
         <br />
-        <RT_Status_Tb :getStatusPage="getStatusPageData" />
+        <RT_Status_Tb :getStatusPage="getStatusPageData" :tanafuda_id="tanafuda_id" :product_number="product_number"
+            :next_process_name="next_process_name" :work_status="work_status" />
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch, watchEffect } from 'vue'
+import { ref, onMounted } from 'vue'
 import Title from '../atom/Title.vue';
 import Title_Text from '../atom/Title_Text.vue'
 import TimeFunction from '../molecules/TimeFunction.vue'
@@ -47,6 +48,10 @@ import RT_Status_Tb from '../organisms/RT_Status_Tb.vue';
 
 const subproject = ref([])
 const status_all = ref([])
+const tanafuda_id = ref('')
+const product_number = ref('')
+const next_process_name = ref(null)
+const work_status = ref(null)
 
 onMounted(() => {
     getSubproject()
@@ -70,7 +75,7 @@ onMounted(() => {
 
 const getStatusPageData = async (page, perPage) => {
     try {
-        const res = await getStatusPage(page, perPage)
+        const res = await getStatusPage(page, perPage, tanafuda_id.value, product_number.value, next_process_name.value, work_status.value)
         return res
     } catch (err) {
         console.error('Error fetching paginated inventory:', err)
