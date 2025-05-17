@@ -22,7 +22,7 @@
                 <Page_Bar class="w-full" :dataTransfer="subproject" text="次工程名称" />
             </div>
             <div class="col-span-2">
-                <Page_Bar class="w-full" text="作業状況" />
+                <Page_Bar class="w-full" :dataTransfer="status_all" text="作業状況" />
             </div>
             <div class="flex col-span-1 justify-end">
                 <Csv_Icon />
@@ -42,19 +42,30 @@ import Search_Title from '../atom/Search_Title.vue';
 import Search from '../atom/Search.vue';
 import Page_Bar from '../atom/Page_Bar.vue';
 import Csv_Icon from '../atom/Csv_Icon.vue';
-import { getStatusPage, getSubproject } from '../../service/status';
+import { getStatusPage, getSubproject, getStatus } from '../../service/status';
 import RT_Status_Tb from '../organisms/RT_Status_Tb.vue';
 
 const subproject = ref([])
+const status_all = ref([])
 
 onMounted(() => {
-  getSubproject()
-    .then(res => {
-      subproject.value = res.data
-    })
-    .catch(err => {
-      console.error('Error extracting data', err)
-    })
+    getSubproject()
+        .then(res => {
+            subproject.value = res.data
+        })
+        .catch(err => {
+            console.error('Error extracting data', err)
+        })
+
+    getStatus()
+        .then(res => {
+            status_all.value = res.data
+            console.log(status_all)
+        })
+        .catch(err => {
+            console.error('Error extracting data', err);
+        });
+
 })
 
 const getStatusPageData = async (page, perPage) => {

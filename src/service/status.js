@@ -8,5 +8,7 @@ export const getStatusPage = (page, per_page ) =>
     },
   });
 
-  export const getSubproject = () => apiClient.get("/subproject");
+export const getSubproject = () => apiClient.get("/subproject");
+export const getStatus = () => apiClient.get("/status_all");
+
 
