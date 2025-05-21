@@ -13,7 +13,7 @@
             leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
             leave-to-class="transform opacity-0 scale-95">
             <MenuItems
-                class="absolute  z-10 mt-3 w-full origin-top-right rounded-sm bg-[#212121] shadow-lg ring-1 ring-black/5 focus:outline-hidden">
+                class="absolute  z-10 mt-3 w-full origin-top-right rounded-sm bg-[#212121] shadow-2xl shadow-black ring-1 ring-black/5 focus:outline-hidden">
                 <div class="py-1">
                     <MenuItem v-for="option in options" :key="option.url" v-slot="{ active }">
                     <button @click="selectOption(option.label, option.url)"

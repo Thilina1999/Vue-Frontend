@@ -6,37 +6,64 @@
           <th class="summary-row border bg-yellow-500 border-gray-300 text-left px-2 py-3.5" colspan="4">
             工程合計
           </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.気密検査 }}
-          </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.SCU }}
-          </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.水蒸気検査 }}
-          </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.特性検査 }}
-          </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.特性検査端数品 }}
-          </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.アクセサリ }}
-          </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.FA }}
-          </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.FA端数品 }}
-          </th>
-          <th class="summary-row border bg-gray-300 border-gray-300 px-2 py-1">
-            {{ summary.外観検査 }}
+
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['気密検査'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['気密検査'] }}</span>
           </th>
 
-          <th class="summary-row border bg-black px-2 py-1">
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['SCU'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['SCU'] }}</span>
           </th>
+
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['水蒸気検査'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['水蒸気検査'] }}</span>
+          </th>
+
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['特性検査'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['特性検査'] }}</span>
+          </th>
+
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['特性検査端数品'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['特性検査端数品'] }}</span>
+          </th>
+
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['アクセサリ'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['アクセサリ'] }}</span>
+          </th>
+
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['FA'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['FA'] }}</span>
+          </th>
+
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['FA端数品'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['FA端数品'] }}</span>
+          </th>
+
+          <th class="summary-row border border-gray-300 px-2 py-1 relative bg-gray-100">
+            <div class="absolute top-0 left-0 h-full bg-blue-500"
+              :style="{ width: ((summary['外観検査'] / summary.total) * 100).toFixed(1) + '%' }"></div>
+            <span class="relative">{{ summary['外観検査'] }}</span>
+          </th>
+
+          <th class="summary-row border bg-black px-2 py-1"></th>
         </tr>
+
 
         <tr class="bg-gray-500 h-12 text-sm">
           <th class="px-2 py-2">メーカー</th>

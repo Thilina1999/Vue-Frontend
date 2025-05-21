@@ -14,7 +14,7 @@
       enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75"
       leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
       <MenuItems
-        class="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#212121] shadow-lg ring-1 ring-black/5 focus:outline-none">
+        class="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#212121] shadow-2xl shadow-black ring-1 ring-black/5 focus:outline-none">
         <div class="max-h-72 overflow-y-auto">
           <MenuItem v-slot="{ active }" @click="selectSelectedData(null)">
           <span :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block px-4 py-2 text-sm']">

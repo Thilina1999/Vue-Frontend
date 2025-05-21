@@ -23,10 +23,124 @@
                     <th class="px-1 py-1">11/14(木)</th>
                 </tr>
             </thead>
+            <tbody>
+                <template v-for="(row, index) in internalData" :key="index">
+                    <tr class="bg-gray-300 text-black text-sm">
+                        <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.品番 }}</td>
+                        <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.メーカ }}</td>
+                        <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.出荷区分 }}</td>
+                        <td class="border border-gray-300 px-2 py-2" rowspan="2">通常</td>
+                        <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.入庫実績 }}</td>
+                        <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.出荷前在庫 }}</td>
+
+                        <td class="bg-yellow-300 border border-gray-300 px-1 py-1 text-center">{{ row.計画1 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画2 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画3 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画4 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画5 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画6 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画7 }}</td>
+                        <td class="border border-gray-300 px-2 py-2" rowspan="2">7</td>
+                    </tr>
+                    <tr class="bg-gray-300 text-black text-sm">
+                        <td class="bg-yellow-300 border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 ) }}
+                        </td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                            row.計画3 ) }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                            row.計画3 + row.計画4 ) }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                            row.計画3 + row.計画4 + row.計画5 ) }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                            row.計画3 + row.計画4 + row.計画5 + row.計画6 ) }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                            row.計画3 + row.計画4 + row.計画5 + row.計画6 + row.計画7 ) }}</td>
+                    </tr>
+                </template>
+            </tbody>
         </table>
+    </div>
+
+    <div class="m-4 flex justify-center space-x-2 text-black">
+        <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" :disabled="currentPage === 1"
+            @click="goToPage(currentPage - 1)">
+            Prev
+        </button>
+
+        <template v-for="page in paginationRange" :key="page">
+            <button v-if="page !== '...'" class="px-3 py-1 border rounded" :class="{
+                'bg-gray-500 text-white': page === currentPage,
+                'bg-gray-200': page !== currentPage,
+            }" @click="goToPage(page)">
+                {{ page }}
+            </button>
+            <span v-else class="text-white px-3 py-1">...</span>
+        </template>
+
+        <button class="px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" :disabled="currentPage === totalPages"
+            @click="goToPage(currentPage + 1)">
+            Next
+        </button>
     </div>
 </template>
 
 <script setup>
+import { ref, onMounted, watch, computed } from 'vue'
 
+const props = defineProps({
+    getBufferPageData: {
+        type: Function,
+        required: true,
+    },
+})
+
+const currentPage = ref(1)
+const rowsPerPage = ref(7)
+const totalPages = ref(1)
+const internalData = ref([])
+const summary = ref([])
+
+// Methods
+const goToPage = async (page) => {
+    try {
+        const res = await props.getBufferPageData(page, rowsPerPage.value)
+        internalData.value = res.data.data
+        summary.value = res.data.summary
+        currentPage.value = res.data.meta.page
+        totalPages.value = res.data.meta.total_pages
+    } catch (err) {
+        console.error('Failed to fetch inventory data:', err)
+    }
+}
+
+const paginationRange = computed(() => {
+    const total = totalPages.value
+    const current = currentPage.value
+    const delta = 3
+    const range = []
+    const rangeWithDots = []
+
+    if (total <= 8) {
+        for (let i = 1; i <= total; i++) {
+            range.push(i)
+        }
+        return range
+    }
+
+    const start = Math.max(2, current - delta)
+    const end = Math.min(total - 1, current + delta)
+
+    range.push(1)
+    if (start > 2) range.push('...')
+    for (let i = start; i <= end; i++) range.push(i)
+    if (end < total - 1) range.push('...')
+    range.push(total)
+
+    return range
+})
+// Lifecycle hooks
+onMounted(() => {
+    goToPage(1)
+})
 </script>

@@ -16,10 +16,10 @@
                 <Range_Filter />
             </div>
             <div class="col-span-3">
-                <Page_Bar_Placholder class="w-full" text="Hello" />
+                <Page_Bar_Placholder class="w-full" text="Hello" label="開始工程" :dataTransfer="headers" v-model="selectedHeaderRangFirst"/>
             </div>
             <div class="col-span-3">
-                <Page_Bar_Placholder class="w-full" text="Hello" />
+                <Page_Bar_Placholder class="w-full" text="Hello" label="終了工程" :dataTransfer="headers" v-model="selectedHeaderRangSecond"/>
             </div>
 
         </div>
@@ -28,7 +28,7 @@
                 <Search_Title />
             </div>
             <div class="col-span-2">
-                <Search text="品番"/>
+                <Search text="品番" />
             </div>
             <div class="col-span-2">
                 <Page_Bar class="w-full" text="メーカ" />
@@ -41,13 +41,14 @@
             </div>
         </div>
         <br />
-        <RT_Buffer_Tb />
+        <RT_Buffer_Tb :getBufferPageData="getBufferPageData" />
 
     </div>
 
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import Title from '../atom/Title.vue';
 import Title_Text from '../atom/Title_Text.vue';
 import TimeFunction from '../molecules/TimeFunction.vue';
@@ -59,5 +60,31 @@ import Page_Bar from '../atom/Page_Bar.vue';
 import Csv_Icon from '../atom/Csv_Icon.vue';
 import Page_Bar_Placholder from '../atom/Page_Bar_Placholder.vue';
 import RT_Buffer_Tb from '../organisms/RT_Buffer_Tb.vue';
+import { headers } from '../constant/Data';
+import { getBufferPage } from '../../service/buffer';
+
+// 
+const selectedHeaderRangFirst = ref(headers[0])
+const selectedHeaderRangSecond = ref(headers.at(-1))
+
+
+const getBufferPageData = async (page, perPage) => {
+  try {
+    const res = await getBufferPage(page, perPage )
+    return res
+  } catch (err) {
+    console.error('Error fetching paginated Week Capacity:', err)
+    return {
+      data: [],
+      meta: {
+        page: 1,
+        per_page: perPage,
+        total_items: 0,
+        total_pages: 1
+      }
+    }
+  }
+}
+
 
 </script>
