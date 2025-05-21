@@ -2,39 +2,29 @@
   <Menu as="div" class="relative inline-block text-left">
     <div>
       <MenuButton
-        class="cursor-pointer inline-flex w-full justify-center gap-x-16 rounded-sm bg-[#212121] px-6 py-3 text-lg text-white shadow-xs ring-inset"
-      >
-        {{ selectedLabel }}
-        <ChevronDownIcon class="-mr-1 size-5 text-gray-400" aria-hidden="true" />
+        class="cursor-pointer inline-flex w-full flex-col items-start gap-1 rounded-sm bg-[#212121] px-6 py-3 text-white shadow-xs ring-inset">
+        <div class="flex w-full justify-between items-center">
+          <span class="text-lg">{{ selectedLabel }}</span>
+          <ChevronDownIcon class="size-5 text-gray-400" aria-hidden="true" />
+        </div>
       </MenuButton>
     </div>
 
-    <transition
-      enter-active-class="transition ease-out duration-100"
-      enter-from-class="transform opacity-0 scale-95"
-      enter-to-class="transform opacity-100 scale-100"
-      leave-active-class="transition ease-in duration-75"
-      leave-from-class="transform opacity-100 scale-100"
-      leave-to-class="transform opacity-0 scale-95"
-    >
+    <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95"
+      enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75"
+      leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
       <MenuItems
-        class="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#212121] shadow-lg ring-1 ring-black/5 focus:outline-none"
-      >
+        class="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#212121] shadow-lg ring-1 ring-black/5 focus:outline-none">
         <div class="max-h-72 overflow-y-auto">
           <MenuItem v-slot="{ active }" @click="selectSelectedData(null)">
-            <span :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block px-4 py-2 text-sm']">
-              {{ text }}
-            </span>
+          <span :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block px-4 py-2 text-sm']">
+            {{ text }}
+          </span>
           </MenuItem>
-          <MenuItem
-            v-for="item in dataTransfer"
-            :key="item"
-            v-slot="{ active }"
-            @click="selectSelectedData(item)"
-          >
-            <span :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block px-4 py-2 text-sm']">
-              {{ item }}
-            </span>
+          <MenuItem v-for="item in dataTransfer" :key="item" v-slot="{ active }" @click="selectSelectedData(item)">
+          <span :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block px-4 py-2 text-sm']">
+            {{ item }}
+          </span>
           </MenuItem>
         </div>
       </MenuItems>

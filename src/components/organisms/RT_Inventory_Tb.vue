@@ -71,7 +71,9 @@
           <td class="border border-gray-300 px-2 py-2">{{ row.FA }}</td>
           <td class="border border-gray-300 px-2 py-2">{{ row.FA端数品 }}</td>
           <td class="border border-gray-300 px-2 py-2">{{ row.外観検査 }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.更新日時 }}</td>
+          <td class="border border-gray-300 px-2 py-2 font-bold text-right">
+            {{ rowTotal(row) }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -170,4 +172,19 @@ watch(
     goToPage(1)
   }
 )
+
+function rowTotal(row) {
+  return (
+    Number(row.気密検査 || 0) +
+    Number(row.SCU || 0) +
+    Number(row.水蒸気検査 || 0) +
+    Number(row.特性検査 || 0) +
+    Number(row.特性検査端数品 || 0) +
+    Number(row.アクセサリ || 0) +
+    Number(row.FA || 0) +
+    Number(row.FA端数品 || 0) +
+    Number(row.外観検査 || 0)
+  )
+}
+
 </script>
