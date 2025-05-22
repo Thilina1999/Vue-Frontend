@@ -21,8 +21,8 @@
                     <td class="border border-gray-300 px-2 py-2">{{ row.品番 }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.次工程名称 }}</td>
                     <td class="border border-gray-300 px-2 py-2">{{ row.加工Lot }}</td>
-                    <td class="border border-gray-300 px-2 py-2">{{ row.数量 }}</td>
-                    <td class="border border-gray-300 px-2 py-2" :class="{
+                    <td class="border border-gray-300 px-2 py-2 text-right">{{ row.数量 }}</td>
+                    <td class="border border-gray-300 px-2 py-2 text-right" :class="{
                         'bg-gray-400 text-white': row.作業状況 === 0,
                         'bg-white text-black': row.作業状況 === 1,
                         'bg-black text-white': row.作業状況 === 2,
@@ -30,9 +30,9 @@
                     }">
                         {{ row.作業状況 }}
                     </td>
-                    <td class="border border-gray-300 px-2 py-2">{{ row.棚札登録日時 }}</td>
-                    <td class="border border-gray-300 px-2 py-2">{{ row.棚札更新日時 }}</td>
-                    <td class="border border-gray-300 px-2 py-2" :class="{
+                    <td class="border border-gray-300 px-2 py-2">{{ formatDate(row.棚札登録日時) }}</td>
+                    <td class="border border-gray-300 px-2 py-2">{{ formatDate(row.棚札更新日時) }}</td>
+                    <td class="border border-gray-300 px-2 py-2 text-right" :class="{
                         'bg-yellow-500 text-white': row.滞留日数 >= 120 && row.滞留日数 <= 149,
                         'bg-red-500 text-black': row.滞留日数 >= 150,
                     }">
@@ -68,6 +68,7 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
+import dayjs from 'dayjs';
 
 // Props
 const props = defineProps({
@@ -137,4 +138,8 @@ watch(
         goToPage(1)
     }
 )
+
+function  formatDate(dateString) {
+    return dayjs(dateString).format('YYYY-MM-DD [T] HH:mm:ss');
+  }
 </script>

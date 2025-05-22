@@ -50,6 +50,8 @@ import { getInventoryPage, getInventoryManufactures, getInventoryShippingClassif
 import Refresh from '../../../public/assets/Refresh.vue'
 import { loadConfig } from '../../utils/config'
 import { refreshTbale, resetTimer } from '../../utils/refreshFunc'
+import { convertToCSV, downloadCSV } from '../../utils/csvFunc'
+import { inventory } from '../constant/Data'
 
 // Refs
 const selectedManufacturer = ref(null)
@@ -105,48 +107,15 @@ const getInventoryPageData = async (page, perPage) => {
   }
 }
 
-const convertToCSV = (rows) => {
-  const headers = [
-    'ASSY品番', 'SUBASSY品番', 'メーカ',
-    '出荷区分', '気密検査', 'SCU',
-    '水蒸気検査', '特性検査',
-    '特性検査端数品', 'アクセサリ', 'FA',
-    'FA端数品', '外観検査', '更新日時'
-  ]
-  const csvContent = [
-    headers.join(','),
-    ...rows.map(row =>
-      headers.map(h => `"${(row[h] ?? '').toString().replace(/"/g, '""')}"`).join(',')
-    )
-  ]
-  return csvContent.join('\n')
-}
-
-// Create Blob and trigger browser download
-const downloadCSV = (csv, filename) => {
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-  const link = document.createElement('a')
-  const url = URL.createObjectURL(blob)
-  link.setAttribute('href', url)
-  link.setAttribute('download', filename)
-  link.style.visibility = 'hidden'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-}
-
 const handleClick = async () => {
   try {
     const response = await getInventory()
     const data = response.data || []
-
     if (!data.length) {
       console.warn('No data to export.')
       return
     }
-    // Convert JSON to CSV
-    const csv = convertToCSV(data)
-    // Trigger download
+    const csv = convertToCSV(data, inventory)
     downloadCSV(csv, 'inventory_export.csv')
   } catch (error) {
     console.error('Error fetching inventory data:', error)
@@ -158,6 +127,5 @@ const handleRefresh = () => {
     resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
   )
 }
-
 
 </script>

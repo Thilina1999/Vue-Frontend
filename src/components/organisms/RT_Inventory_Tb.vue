@@ -89,15 +89,15 @@
           <td class="border border-gray-300 px-2 py-2">{{ row.ASSY品番 }}</td>
           <td class="border border-gray-300 px-2 py-2">{{ row.SUBASSY品番 }}</td>
           <td class="border border-gray-300 px-2 py-2">{{ row.出荷区分 }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.気密検査 }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.SCU }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.水蒸気検査 }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.特性検査 }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.特性検査端数品 }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.アクセサリ }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.FA }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.FA端数品 }}</td>
-          <td class="border border-gray-300 px-2 py-2">{{ row.外観検査 }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.気密検査 }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.SCU }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.水蒸気検査 }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.特性検査 }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.特性検査端数品 }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.アクセサリ }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.FA }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.FA端数品 }}</td>
+          <td class="border border-gray-300 px-2 py-2 text-right">{{ row.外観検査 }}</td>
           <td class="border border-gray-300 px-2 py-2 font-bold text-right">
             {{ rowTotal(row) }}
           </td>

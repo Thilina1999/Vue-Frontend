@@ -10,4 +10,11 @@ export const headers = [
   "外観検査"
 ];
 
+ export const inventory = [
+    'ASSY品番', 'SUBASSY品番', 'メーカ',
+    '出荷区分', '気密検査', 'SCU',
+    '水蒸気検査', '特性検査',
+    '特性検査端数品', 'アクセサリ', 'FA',
+    'FA端数品', '外観検査', '更新日時'
+  ]
 

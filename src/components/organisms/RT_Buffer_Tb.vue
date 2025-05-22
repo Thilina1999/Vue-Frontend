@@ -29,32 +29,32 @@
                         <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.品番 }}</td>
                         <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.メーカ }}</td>
                         <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.出荷区分 }}</td>
-                        <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.range_sum }}</td>
-                        <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.入庫実績 }}</td>
-                        <td class="border border-gray-300 px-2 py-2" rowspan="2">{{ row.出荷前在庫 }}</td>
+                        <td class="border border-gray-300 px-2 py-2 font-bold text-right" rowspan="2">{{ row.range_sum }}</td>
+                        <td class="border border-gray-300 px-2 py-2 text-right" rowspan="2">{{ row.入庫実績 }}</td>
+                        <td class="border border-gray-300 px-2 py-2 text-right" rowspan="2">{{ row.出荷前在庫 }}</td>
 
-                        <td class="bg-yellow-300 border border-gray-300 px-1 py-1 text-center">{{ row.計画1 }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画2 }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画3 }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画4 }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画5 }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画6 }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.計画7 }}</td>
-                        <td class="border border-gray-300 px-2 py-2" rowspan="2">7</td>
+                        <td class="bg-yellow-300 border border-gray-300 px-1 py-1 text-right">{{ row.計画1 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.計画2 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.計画3 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.計画4 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.計画5 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.計画6 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.計画7 }}</td>
+                        <td class="border border-gray-300 px-2 py-2 text-right" rowspan="2">7</td>
                     </tr>
                     <tr class="bg-gray-300 text-black text-sm">
-                        <td class="bg-yellow-300 border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2) }}
+                        <td class="bg-yellow-300 border border-gray-300 px-1 py-1 text-right">{{ row.出荷前在庫 }}</td>
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.出荷前在庫 - (row.計画1 + row.計画2) }}
                         </td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
                             row.計画3) }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
                             row.計画3 + row.計画4) }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
                             row.計画3 + row.計画4 + row.計画5) }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
                             row.計画3 + row.計画4 + row.計画5 + row.計画6) }}</td>
-                        <td class="border border-gray-300 px-1 py-1 text-center">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
+                        <td class="border border-gray-300 px-1 py-1 text-right">{{ row.出荷前在庫 - (row.計画1 + row.計画2 +
                             row.計画3 + row.計画4 + row.計画5 + row.計画6 + row.計画7) }}</td>
                     </tr>
                 </template>
