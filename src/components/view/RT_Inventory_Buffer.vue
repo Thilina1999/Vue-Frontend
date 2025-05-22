@@ -5,8 +5,8 @@
             <Title title="リアルタイム中間在庫余力日数" />
             <Title_Text class="text-lg" text="最終更新日時" />
             <TimeFunction class="text-lg" />
-            <Title_Text class="text-lg" :text="`更新頻度:  分`" />
-            <button type="button">
+            <Title_Text class="text-lg" :text="`更新頻度: ${inventoryKey} 分`" />
+            <button type="button" @click="handleRefresh">
                 <Refresh class="h-6 w-6 cursor-pointer" />
             </button>
         </div>
@@ -45,7 +45,8 @@
         </div>
         <br />
         <RT_Buffer_Tb :getBufferPageData="getBufferPageData" :manufacturer="selectedManufacturer"
-        :searchText="searchText" :shippingClassification="selectedShippingClassification" :rangeFirst="selectedHeaderRangFirst" :rangeSecond="selectedHeaderRangSecond" />
+            :searchText="searchText" :shippingClassification="selectedShippingClassification"
+            :rangeFirst="selectedHeaderRangFirst" :rangeSecond="selectedHeaderRangSecond" :key="inventoryKey" />
 
     </div>
 
@@ -66,6 +67,8 @@ import Page_Bar_Placholder from '../atom/Page_Bar_Placholder.vue';
 import RT_Buffer_Tb from '../organisms/RT_Buffer_Tb.vue';
 import { headers } from '../constant/Data';
 import { getBufferPage, getBufferManufactures, getBufferShipping } from '../../service/buffer';
+import { loadConfig } from '../../utils/config'
+import { refreshTbale, resetTimer } from '../../utils/refreshFunc'
 
 // 
 const selectedHeaderRangFirst = ref(headers[0])
@@ -75,6 +78,9 @@ const shippingClassification = ref([])
 const selectedManufacturer = ref(null)
 const selectedShippingClassification = ref(null)
 const searchText = ref('')
+const refreshIntervalSeconds = ref(10)
+const inventoryKey = ref(0)
+const intervalId = ref(null)
 
 
 onMounted(() => {
@@ -92,11 +98,17 @@ onMounted(() => {
         console.error('Error extracting data', err)
     })
 
+    loadConfig(import.meta.env.VITE_BUFFER).then(res => {
+        refreshIntervalSeconds.value = res
+        handleRefresh();
+    }).catch(err => {
+        console.error(err)
+    })
 })
 
-const getBufferPageData = async ( page, perPage ) => {
+const getBufferPageData = async (page, perPage) => {
     try {
-        const res = await getBufferPage( page, perPage, selectedManufacturer.value, searchText.value, selectedShippingClassification.value, selectedHeaderRangFirst.value, selectedHeaderRangSecond.value )
+        const res = await getBufferPage(page, perPage, selectedManufacturer.value, searchText.value, selectedShippingClassification.value, selectedHeaderRangFirst.value, selectedHeaderRangSecond.value)
         return res
     } catch (err) {
         console.error('Error fetching paginated Week Capacity:', err)
@@ -112,5 +124,10 @@ const getBufferPageData = async ( page, perPage ) => {
     }
 }
 
+const handleRefresh = () => {
+  refreshTbale(inventoryKey, () =>
+    resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
+  )
+}
 
 </script>
