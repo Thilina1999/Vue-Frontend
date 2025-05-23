@@ -2,9 +2,11 @@
     <Menu as="div" class="relative inline-block text-left">
         <div>
             <MenuButton
-                class="inline-flex w-full justify-start lg:gap-x-36 md:gap-x-24 sm:gap-x-12 rounded-sm bg-[#212121] px-4 py-2 text-md font-semibold text-white shadow-xs ring-1 ring-white ring-inset hover:bg-gray-900 overflow-hidden text-ellipsis">
-                {{ selectedOption }}
-                <ChevronDownIcon class="size-5 text-white" aria-hidden="true" />
+                class="cursor-pointer inline-flex w-full flex-col items-start gap-1 rounded-sm bg-[#212121] p-2 text-white shadow-xs ring-1 ring-white ring-inset hover:bg-gray-900">
+                <div class="flex w-full justify-between items-center">
+                    <span class="text-lg font-semibold">{{ selectedOption }}</span>
+                    <ChevronDownIcon class="size-7 text-gray-400" aria-hidden="true" />
+                </div>
             </MenuButton>
         </div>
 
@@ -13,11 +15,11 @@
             leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
             leave-to-class="transform opacity-0 scale-95">
             <MenuItems
-                class="absolute  z-10 mt-3 w-full origin-top-right rounded-sm bg-[#212121] shadow-2xl shadow-black ring-1 ring-black/5 focus:outline-hidden">
+                class="absolute right-2 z-10 mt-4 left-2  origin-top-right rounded-sm bg-[#212121] shadow-2xl shadow-black ring-1 ring-black/5 focus:outline-hidden">
                 <div class="py-1">
                     <MenuItem v-for="option in options" :key="option.url" v-slot="{ active }">
                     <button @click="selectOption(option.label, option.url)"
-                        :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block w-full px-4 py-2 text-left text-md']">
+                        :class="[active ? 'bg-gray-100 text-black' : 'text-white', 'block w-full px-3 py-2 text-left text-md']">
                         {{ option.label }}
                     </button>
                     </MenuItem>
