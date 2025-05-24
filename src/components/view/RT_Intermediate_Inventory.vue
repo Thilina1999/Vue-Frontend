@@ -13,7 +13,7 @@
       <br />
       <div class="grid grid-cols-8 items-center gap-3 flex-wrap">
         <div class="col-span-1">
-          <Search_Title />
+          <Search_Title text="絞込み検索" />
         </div>
         <div class="col-span-2">
           <Page_Bar class="w-full" :dataTransfer="inventoryManufactures" v-model="selectedManufacturer" text="メーカー" />

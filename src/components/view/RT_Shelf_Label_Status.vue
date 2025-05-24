@@ -13,7 +13,7 @@
         <br />
         <div class="grid grid-cols-10 items-center gap-3 flex-wrap">
             <div class="col-span-1">
-                <Search_Title />
+                <Search_Title text="絞込み検索" />
             </div>
             <div class="col-span-2">
                 <Search class="w-full" text="棚札ID" v-model="tanafuda_id" />

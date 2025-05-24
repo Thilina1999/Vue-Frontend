@@ -13,7 +13,7 @@
         <br />
         <div class="grid grid-cols-8 items-center gap-3 flex-wrap">
             <div class="col-span-1">
-                <Range_Filter />
+                <Range_Filter text="工程内在庫数" />
             </div>
             <div class="col-span-3">
                 <Page_Bar_Placholder class="w-full" label="開始工程" :dataTransfer="headers"
@@ -27,7 +27,7 @@
         </div>
         <div class="grid grid-cols-8 pt-4 items-center gap-3 flex-wrap">
             <div class="col-span-1">
-                <Search_Title />
+                <Search_Title text="絞込み検索" />
             </div>
             <div class="col-span-2">
                 <Search text="品番" v-model="searchText" />

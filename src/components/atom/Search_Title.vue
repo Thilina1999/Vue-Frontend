@@ -9,12 +9,17 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <h1 class="text-white block w-full p-3 ps-10 text-lg font-semibold">絞込み検索</h1>
+                <h1 class="text-white block w-full p-3 ps-10 text-lg font-semibold">{{ text }}</h1>
             </div>
         </form>
     </div>
 </template>
 
 <script setup>
-
+const props = defineProps({
+  text: {
+    type: String,
+    required: true
+  },
+})
 </script>

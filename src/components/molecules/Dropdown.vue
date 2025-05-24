@@ -5,7 +5,7 @@
                 class="cursor-pointer inline-flex w-full flex-col items-start gap-1 rounded-sm bg-[#212121] p-2 text-white shadow-xs ring-1 ring-white ring-inset hover:bg-gray-900">
                 <div class="flex w-full justify-between items-center">
                     <span class="text-lg font-semibold">{{ selectedOption }}</span>
-                    <ChevronDownIcon class="size-7 text-gray-400" aria-hidden="true" />
+                    <ChevronDownIcon class="size-6 text-gray-400" aria-hidden="true" />
                 </div>
             </MenuButton>
         </div>
