@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import "../node_modules/flowbite-datepicker";
+
 
 body {
     background-color: black;
@@ -38,5 +40,6 @@ body {
 }
 
 canvas {
-    min-width: 1600px;
+    min-width: 1000px;
 }
+
