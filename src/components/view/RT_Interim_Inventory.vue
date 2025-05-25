@@ -5,7 +5,7 @@
             <Title title="中間在庫推移" />
         </div>
         <br />
-        <div class="grid grid-cols-10 items-center gap-3 flex-wrap">
+        <div class="grid grid-cols-10 items-center gap-4 flex-wrap">
             <div class="col-span-1">
                 <Range_Filter text="条件設定" />
             </div>
