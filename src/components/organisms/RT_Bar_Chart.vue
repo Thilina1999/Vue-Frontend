@@ -9,9 +9,14 @@
                             {{ label }}
                         </th>
                     </tr>
-                    <tr class="bg-red-600">
-                        <th v-for="(label, i) in values" :key="'t-' + i" class=" px-2 py-2 text-center">
-                            {{ label }}
+                    <tr>
+                        <th v-for="(value, i) in values" :key="'t-' + i" class="px-2 py-2 text-center" :class="{
+                            'bg-red-600': value < Number(threshold?.[0]?.基準在庫下限数),
+                            'bg-orange-600': value > Number(threshold?.[0]?.基準在庫上限数),
+                            'bg-green-600': value >= Number(threshold?.[0]?.基準在庫下限数) &&
+                                value <= Number(threshold?.[0]?.基準在庫上限数)
+                        }">
+                            {{ value }}
                         </th>
                     </tr>
                 </thead>
@@ -50,13 +55,15 @@ const props = defineProps({
     values: {
         type: Array,
         default: () => []
+    },
+    threshold: {
+        type: Object,
     }
 })
 
 
 const barCount = props.labels.length
 const barWidth = 90
-
 
 const chartData = {
     labels: props.labels,
@@ -65,7 +72,14 @@ const chartData = {
             type: 'bar',
             label: 'Output',
             data: props.values,
-            backgroundColor: 'red',
+            backgroundColor: props.values.map(value => {
+                const lower = Number(props.threshold?.[0]?.基準在庫下限数);
+                const upper = Number(props.threshold?.[0]?.基準在庫上限数);
+
+                if (value < lower) return 'red';     // Below minimum
+                if (value > upper) return 'orange';  // Above maximum
+                return 'green';                      // Within range
+            }),
             borderSkipped: false,
             barThickness: 50
         },
@@ -82,8 +96,8 @@ const chartData = {
         },
         {
             type: 'line',
-            label: 'Target Line (200)',
-            data: Array(props.values.length).fill(200),
+            label: `Lower Limit (${props.threshold?.[0]?.基準在庫下限数 || 'N/A'})`,
+            data: Array(props.values.length).fill(Number(props.threshold?.[0]?.基準在庫下限数 ?? 0)),
             borderColor: 'red',
             borderDash: [5, 5],
             borderWidth: 2,
@@ -92,8 +106,8 @@ const chartData = {
         },
         {
             type: 'line',
-            label: 'Limit Line (300)',
-            data: Array(props.values.length).fill(230),
+            label: `Limit Line (${props.threshold?.[0]?.基準在庫数 || 'N/A'})`,
+            data: Array(props.values.length).fill(Number(props.threshold?.[0]?.基準在庫数 ?? 0)),
             borderColor: 'green',
             borderDash: [5, 5],
             borderWidth: 2,
@@ -102,8 +116,8 @@ const chartData = {
         },
         {
             type: 'line',
-            label: 'Max Line (380)',
-            data: Array(props.values.length).fill(280),
+            label: `MAX LINE (${props.threshold?.[0]?.基準在庫上限数 || 'N/A'})`,
+            data: Array(props.values.length).fill(Number(props.threshold?.[0]?.基準在庫上限数 ?? 0)),
             borderColor: 'orange',
             borderDash: [5, 5],
             borderWidth: 2,

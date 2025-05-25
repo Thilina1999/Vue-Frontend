@@ -33,7 +33,8 @@
                     <Tray_Tbale header="ASSY品番" :number="`${searchText}`" />
                 </div>
                 <div class="col-span-11 justify-items-start">
-                    <RT_Bar_Chart :key="chartKey" :labels="chartData.labels" :values="chartData.values" />
+                    <RT_Bar_Chart :key="chartKey" :labels="chartData.labels" :values="chartData.values"
+                        :threshold="threshold" />
                 </div>
             </div>
         </div>
@@ -47,7 +48,7 @@ import RT_Bar_Chart from '../organisms/RT_Bar_Chart.vue';
 import Tray_Tbale from '../atom/Tray_Tbale.vue';
 import Range_Filter from '../atom/Range_Filter.vue';
 import Page_Bar_Placholder from '../atom/Page_Bar_Placholder.vue';
-import { getGroupName, getDataChart } from '../../service/chart';
+import { getGroupName, getDataChart, getThreshold } from '../../service/chart';
 import Search_Chart from '../atom/Search_Chart.vue';
 import Csv_Icon from '../atom/Csv_Icon.vue';
 import Date_Picker from '../atom/Date_Picker.vue';
@@ -61,6 +62,7 @@ const chartData = ref({
     labels: [],
     values: []
 })
+const threshold = ref([])
 const chartKey = ref(0)
 
 
@@ -79,6 +81,9 @@ const getChartData = async () => {
     try {
         const res = await getDataChart(searchText.value, selectedGroupName.value, selectedDateFirst.value, selectedDateSecond.value)
         chartData.value = processChartData(res.data);
+        const res_thresh = await getThreshold(searchText.value, selectedGroupName.value)
+        threshold.value = res_thresh.data
+        console.log(res_thresh)
         chartKey.value++
     } catch (err) {
         console.error('Error fetching paginated inventory:', err)

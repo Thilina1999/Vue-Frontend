@@ -10,8 +10,8 @@
         </label>
         <input id="floating-input" type="search"
             class="block w-full pt-6 pb-2 px-3 text-lg text-white bg-[#212121] rounded-sm placeholder-transparent focus:outline-none"
-             @focus="isFocused = true" @blur="isFocused = false"
-            v-model="searchValue" @input="emit('update:modelValue', searchValue)" required />
+            @focus="isFocused = true" @blur="isFocused = false" v-model="searchValue"
+            @input="emit('update:modelValue', searchValue)" required />
     </div>
 </template>
 
@@ -19,11 +19,11 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps({
-  text: {
-    type: String,
-    required: true
-  },    
-  modelValue: String
+    text: {
+        type: String,
+        required: true
+    },
+    modelValue: String
 })
 
 const emit = defineEmits(['update:modelValue'])
