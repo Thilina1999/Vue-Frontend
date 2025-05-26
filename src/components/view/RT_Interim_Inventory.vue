@@ -27,8 +27,13 @@
             </div>
         </div>
         <br />
-        <div class="bg-gray-300 rounded-lg ">
-            <div class="p-7 lg:grid lg:grid-cols-12 flex-wrap items-end">
+        <div class="bg-gray-300 rounded-md ">
+            <div class="flex gap-x-4 p-1 pr-6 pt-5 justify-end">
+                <Radio_Button text="日单位" id="hs-radio-group-1" name="time-unit" value="日单位" v-model="timeUnit" />
+                <Radio_Button text="時单位" id="hs-radio-group-2" name="time-unit" value="時单位" v-model="timeUnit" />
+            </div>
+
+            <div class="p-5 lg:grid lg:grid-cols-12 flex-wrap items-end">
                 <div class="col-span-1 justify-start flex">
                     <Tray_Tbale header="ASSY品番" :number="`${searchText}`" />
                 </div>
@@ -52,6 +57,7 @@ import { getGroupName, getDataChart, getThreshold } from '../../service/chart';
 import Search_Chart from '../atom/Search_Chart.vue';
 import Csv_Icon from '../atom/Csv_Icon.vue';
 import Date_Picker from '../atom/Date_Picker.vue';
+import Radio_Button from '../atom/Radio_Button.vue';
 
 const headersGroup = ref([])
 const selectedGroupName = ref(null)
@@ -64,7 +70,12 @@ const chartData = ref({
 })
 const threshold = ref([])
 const chartKey = ref(0)
+const timeUnit = ref('時单位')
 
+// Watch for changes in timeUnit
+watch(timeUnit, (newUnit, oldUnit) => {
+  console.log(`Time unit changed from ${oldUnit} to ${newUnit}`)
+})
 
 onMounted(() => {
     getGroupName()
@@ -79,11 +90,10 @@ onMounted(() => {
 
 const getChartData = async () => {
     try {
-        const res = await getDataChart(searchText.value, selectedGroupName.value, selectedDateFirst.value, selectedDateSecond.value)
+        const res = await getDataChart(searchText.value, selectedGroupName.value, selectedDateFirst.value, selectedDateSecond.value, timeUnit.value)
         chartData.value = processChartData(res.data);
         const res_thresh = await getThreshold(searchText.value, selectedGroupName.value)
         threshold.value = res_thresh.data
-        console.log(res_thresh)
         chartKey.value++
     } catch (err) {
         console.error('Error fetching paginated inventory:', err)
@@ -93,7 +103,7 @@ const getChartData = async () => {
 }
 
 watch(
-    [searchText, selectedGroupName, selectedDateFirst, selectedDateSecond],
+    [searchText, selectedGroupName, selectedDateFirst, selectedDateSecond, timeUnit],
     () => {
         if (searchText.value &&
             selectedGroupName.value &&

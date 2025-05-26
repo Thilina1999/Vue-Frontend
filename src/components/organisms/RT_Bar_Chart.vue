@@ -1,7 +1,7 @@
 <template>
     <div class="scrollbar-top-wrapper">
         <div v-if="barCount * barWidth > 0" class="chart-container overflow-x-auto pl-8 pr-1"
-            :style="{ minWidth: `${barCount * barWidth}px` }">
+:style="{ minWidth: `${Math.max(barCount * barWidth, 1400)}px` }">
             <table class="w-full table-auto border-separate border rounded-sm bg-white text-black text-sm">
                 <thead>
                     <tr class="bg-gray-500">
@@ -142,7 +142,7 @@ const chartOptions = {
         },
         y: {
             suggestedMin: 0,
-            suggestedMax: 400,
+            suggestedMax: (Number(props.threshold?.[0]?.基準在庫上限数) + 30 || 400),
             ticks: {
                 stepSize: 50
             }
