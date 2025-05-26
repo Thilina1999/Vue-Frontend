@@ -72,11 +72,6 @@ const threshold = ref([])
 const chartKey = ref(0)
 const timeUnit = ref('時单位')
 
-// Watch for changes in timeUnit
-watch(timeUnit, (newUnit, oldUnit) => {
-  console.log(`Time unit changed from ${oldUnit} to ${newUnit}`)
-})
-
 onMounted(() => {
     getGroupName()
         .then(res => {

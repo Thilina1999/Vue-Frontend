@@ -144,7 +144,7 @@ const chartOptions = {
             suggestedMin: 0,
             suggestedMax: (Number(props.threshold?.[0]?.基準在庫上限数) + 30 || 400),
             ticks: {
-                stepSize: 50
+                stepSize: Math.round(((Number(props.threshold?.[0]?.基準在庫上限数) + 30) / 8) / 10) * 10 || 50
             }
         }
     },
