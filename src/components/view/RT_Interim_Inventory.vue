@@ -86,7 +86,7 @@ onMounted(() => {
 const getChartData = async () => {
     try {
         const res = await getDataChart(searchText.value, selectedGroupName.value, selectedDateFirst.value, selectedDateSecond.value, timeUnit.value)
-        chartData.value = processChartData(res.data);
+        chartData.value = processChartData(res.data, timeUnit.value);
         const res_thresh = await getThreshold(searchText.value, selectedGroupName.value)
         threshold.value = res_thresh.data
         chartKey.value++
@@ -110,10 +110,16 @@ watch(
     { deep: true }
 )
 
-const processChartData = (apiData) => {
+const processChartData = (apiData, time) => {
     const formatDate = (isoString) => {
         const date = new Date(isoString);
-        return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+        if (time === "日单位") {
+            // Format: "MM/DD" (e.g., "9/11")
+            return `${date.getMonth() + 1}/${date.getDate()}`;
+        } else {
+            // Format: "MM/DD HH:MM" (e.g., "9/11 14:30")
+            return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+        }
     };
 
     const labels = apiData.map(item => formatDate(item.time));

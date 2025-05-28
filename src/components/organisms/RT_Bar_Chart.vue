@@ -109,7 +109,7 @@ const chartData = {
             label: `Limit Line (${props.threshold?.[0]?.基準在庫数 || 'N/A'})`,
             data: Array(props.values.length).fill(Number(props.threshold?.[0]?.基準在庫数 ?? 0)),
             borderColor: 'green',
-            borderDash: [5, 5],
+            borderDash: [],
             borderWidth: 2,
             fill: false,
             pointRadius: 0
@@ -132,12 +132,13 @@ const chartOptions = {
     maintainAspectRatio: false,
     scales: {
         x: {
+            
             ticks: {
                 display: false // hide chart x-axis labels
             },
 
             grid: {
-                display: true
+                display: true,
             }
         },
         y: {
