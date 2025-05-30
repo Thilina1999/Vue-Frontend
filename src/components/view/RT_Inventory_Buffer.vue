@@ -125,9 +125,9 @@ const getBufferPageData = async (page, perPage) => {
 }
 
 const handleRefresh = () => {
-  refreshTbale(inventoryKey, () =>
-    resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
-  )
+    refreshTbale(inventoryKey, () =>
+        resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
+    )
 }
 
 </script>
