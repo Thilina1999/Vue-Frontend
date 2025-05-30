@@ -1,41 +1,45 @@
 // stores/inventoryStore.js
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getInventoryPage } from "../service/inventory";
+import { getStatusPage } from "../service/status";
 
-export const useInventoryStore = defineStore("inventory", () => {
+export const useStatusStore = defineStore("status", () => {
   // State
   const cache = ref(new Map());
 
   const getCacheKey = (
     page,
     perPage,
-    selectedManufacturer,
-    searchText,
-    selectedShippingClassification
+    tanafuda_id,
+    product_number,
+    next_process_name,
+    work_status
   ) => {
     return JSON.stringify({
       page,
       perPage,
-      selectedManufacturer,
-      searchText,
-      selectedShippingClassification
+      tanafuda_id,
+      product_number,
+      next_process_name,
+      work_status,
     });
   };
 
   const fetchPage = async (
     page,
     perPage,
-    selectedManufacturer,
-    searchText,
-    selectedShippingClassification
+    tanafuda_id,
+    product_number,
+    next_process_name,
+    work_status
   ) => {
     const cacheKey = getCacheKey(
       page,
       perPage,
-      selectedManufacturer,
-      searchText,
-      selectedShippingClassification
+      tanafuda_id,
+      product_number,
+      next_process_name,
+      work_status
     );
 
     if (cache.value.has(cacheKey)) {
@@ -44,18 +48,19 @@ export const useInventoryStore = defineStore("inventory", () => {
     }
 
     try {
-      const res = await getInventoryPage(
+      const res = await getStatusPage(
         page,
         perPage,
-        selectedManufacturer,
-        searchText,
-        selectedShippingClassification
+        tanafuda_id,
+        product_number,
+        next_process_name,
+        work_status
       );
 
       cache.value.set(cacheKey, res);
       return res;
     } catch (error) {
-      console.error("Failed to fetch inventory:", error);
+      console.error("Failed to fetch Status:", error);
     }
   };
 
@@ -65,6 +70,6 @@ export const useInventoryStore = defineStore("inventory", () => {
 
   return {
     fetchPage,
-    clearCache
+    clearCache,
   };
 });

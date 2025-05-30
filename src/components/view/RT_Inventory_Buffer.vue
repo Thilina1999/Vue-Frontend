@@ -69,6 +69,7 @@ import { headers } from '../constant/Data';
 import { getBufferPage, getBufferManufactures, getBufferShipping } from '../../service/buffer';
 import { loadConfig } from '../../utils/config'
 import { refreshTbale, resetTimer } from '../../utils/refreshFunc'
+import { useBufferStore } from '../../store/bufferStore';
 
 // 
 const selectedHeaderRangFirst = ref(headers[0])
@@ -81,6 +82,7 @@ const searchText = ref('')
 const refreshIntervalSeconds = ref(10)
 const inventoryKey = ref(0)
 const intervalId = ref(null)
+const bufferStore = useBufferStore()
 
 
 onMounted(() => {
@@ -108,7 +110,7 @@ onMounted(() => {
 
 const getBufferPageData = async (page, perPage) => {
     try {
-        const res = await getBufferPage(page, perPage, selectedManufacturer.value, searchText.value, selectedShippingClassification.value, selectedHeaderRangFirst.value, selectedHeaderRangSecond.value)
+        const res = await bufferStore.fetchPage(page, perPage, selectedManufacturer.value, searchText.value, selectedShippingClassification.value, selectedHeaderRangFirst.value, selectedHeaderRangSecond.value)
         return res
     } catch (err) {
         console.error('Error fetching paginated Week Capacity:', err)
@@ -125,6 +127,7 @@ const getBufferPageData = async (page, perPage) => {
 }
 
 const handleRefresh = () => {
+    bufferStore.clearCache();
     refreshTbale(inventoryKey, () =>
         resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
     )

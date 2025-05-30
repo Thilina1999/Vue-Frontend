@@ -51,6 +51,7 @@ import RT_Status_Tb from '../organisms/RT_Status_Tb.vue';
 import { loadConfig } from '../../utils/config'
 import Refresh from '../../../public/assets/Refresh.vue';
 import { refreshTbale, resetTimer } from '../../utils/refreshFunc'
+import { useStatusStore } from '../../store/statusStore';
 
 const subproject = ref([])
 const status_all = ref([])
@@ -61,6 +62,7 @@ const work_status = ref(null)
 const refreshIntervalSeconds = ref(10)
 const refreshKey = ref(0)
 const intervalId = ref(null)
+const statusStore = useStatusStore()
 
 onMounted(() => {
     getSubproject()
@@ -91,7 +93,7 @@ onMounted(() => {
 
 const getStatusPageData = async (page, perPage) => {
     try {
-        const res = await getStatusPage(page, perPage, tanafuda_id.value, product_number.value, next_process_name.value, work_status.value)
+        const res = await statusStore.fetchPage(page, perPage, tanafuda_id.value, product_number.value, next_process_name.value, work_status.value)
         return res
     } catch (err) {
         console.error('Error fetching paginated inventory:', err)
@@ -108,9 +110,10 @@ const getStatusPageData = async (page, perPage) => {
 }
 
 const handleRefresh = () => {
-  refreshTbale(refreshKey, () =>
-    resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
-  )
+    statusStore.clearCache()
+    refreshTbale(refreshKey, () =>
+        resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
+    )
 }
 
 </script>

@@ -1,9 +1,9 @@
 // stores/inventoryStore.js
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getInventoryPage } from "../service/inventory";
+import { getBufferPage } from "../service/buffer";
 
-export const useInventoryStore = defineStore("inventory", () => {
+export const useBufferStore = defineStore("buffer", () => {
   // State
   const cache = ref(new Map());
 
@@ -12,14 +12,18 @@ export const useInventoryStore = defineStore("inventory", () => {
     perPage,
     selectedManufacturer,
     searchText,
-    selectedShippingClassification
+    selectedShippingClassification,
+    selectedHeaderRangFirst,
+    selectedHeaderRangSecond
   ) => {
     return JSON.stringify({
       page,
       perPage,
       selectedManufacturer,
       searchText,
-      selectedShippingClassification
+      selectedShippingClassification,
+      selectedHeaderRangFirst,
+      selectedHeaderRangSecond,
     });
   };
 
@@ -28,14 +32,18 @@ export const useInventoryStore = defineStore("inventory", () => {
     perPage,
     selectedManufacturer,
     searchText,
-    selectedShippingClassification
+    selectedShippingClassification,
+    selectedHeaderRangFirst,
+    selectedHeaderRangSecond
   ) => {
     const cacheKey = getCacheKey(
       page,
       perPage,
       selectedManufacturer,
       searchText,
-      selectedShippingClassification
+      selectedShippingClassification,
+      selectedHeaderRangFirst,
+      selectedHeaderRangSecond
     );
 
     if (cache.value.has(cacheKey)) {
@@ -44,18 +52,20 @@ export const useInventoryStore = defineStore("inventory", () => {
     }
 
     try {
-      const res = await getInventoryPage(
+      const res = await getBufferPage(
         page,
         perPage,
         selectedManufacturer,
         searchText,
-        selectedShippingClassification
+        selectedShippingClassification,
+        selectedHeaderRangFirst,
+        selectedHeaderRangSecond
       );
 
       cache.value.set(cacheKey, res);
       return res;
     } catch (error) {
-      console.error("Failed to fetch inventory:", error);
+      console.error("Failed to fetch buffer:", error);
     }
   };
 
@@ -65,6 +75,6 @@ export const useInventoryStore = defineStore("inventory", () => {
 
   return {
     fetchPage,
-    clearCache
+    clearCache,
   };
 });
