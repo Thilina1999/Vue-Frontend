@@ -58,6 +58,7 @@ import Search_Chart from '../atom/Search_Chart.vue';
 import Csv_Icon from '../atom/Csv_Icon.vue';
 import Date_Picker from '../atom/Date_Picker.vue';
 import Radio_Button from '../atom/Radio_Button.vue';
+import { useChartStore, useThreshHoldStore } from '../../store/chartStore';
 
 const headersGroup = ref([])
 const selectedGroupName = ref(null)
@@ -71,6 +72,8 @@ const chartData = ref({
 const threshold = ref([])
 const chartKey = ref(0)
 const timeUnit = ref('時单位')
+const chartStore = useChartStore()
+const thresholdStore = useThreshHoldStore()
 
 onMounted(() => {
     getGroupName()
@@ -81,13 +84,16 @@ onMounted(() => {
         .catch(err => {
             console.error('Error extracting data', err)
         })
+
+    chartStore.clearCache()
+    thresholdStore.clearCache()
 })
 
 const getChartData = async () => {
     try {
-        const res = await getDataChart(searchText.value, selectedGroupName.value, selectedDateFirst.value, selectedDateSecond.value, timeUnit.value)
+        const res = await chartStore.fetchData(searchText.value, selectedGroupName.value, selectedDateFirst.value, selectedDateSecond.value, timeUnit.value)
         chartData.value = processChartData(res.data, timeUnit.value);
-        const res_thresh = await getThreshold(searchText.value, selectedGroupName.value)
+        const res_thresh = await thresholdStore.fetchData(searchText.value, selectedGroupName.value)
         threshold.value = res_thresh.data
         chartKey.value++
     } catch (err) {
