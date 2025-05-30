@@ -14,7 +14,7 @@
                     v-model="selectedGroupName" />
             </div>
             <div class="col-span-2">
-                <Search_Chart class="w-full" v-model="searchText" text="品番 (必須)" />
+                <Search_Chart class="w-full" v-model="searchText" text="品番 (必須)" :options="productNumbers" />
             </div>
             <div class="col-span-2">
                 <Date_Picker text="開始日" v-model="selectedDateFirst" />
@@ -53,7 +53,7 @@ import RT_Bar_Chart from '../organisms/RT_Bar_Chart.vue';
 import Tray_Tbale from '../atom/Tray_Tbale.vue';
 import Range_Filter from '../atom/Range_Filter.vue';
 import Page_Bar_Placholder from '../atom/Page_Bar_Placholder.vue';
-import { getGroupName, getDataChart, getThreshold } from '../../service/chart';
+import { getGroupName, getAssyNumber } from '../../service/chart';
 import Search_Chart from '../atom/Search_Chart.vue';
 import Csv_Icon from '../atom/Csv_Icon.vue';
 import Date_Picker from '../atom/Date_Picker.vue';
@@ -74,6 +74,7 @@ const chartKey = ref(0)
 const timeUnit = ref('時单位')
 const chartStore = useChartStore()
 const thresholdStore = useThreshHoldStore()
+const productNumbers = ref([])
 
 onMounted(() => {
     getGroupName()
@@ -83,6 +84,12 @@ onMounted(() => {
         })
         .catch(err => {
             console.error('Error extracting data', err)
+        })
+    getAssyNumber()
+        .then(res => {
+            productNumbers.value = res.data
+        }).catch(err => {
+            console.error('Error handling numbers', err)
         })
 
     chartStore.clearCache()
@@ -110,11 +117,19 @@ watch(
             selectedGroupName.value &&
             selectedDateFirst.value &&
             selectedDateSecond.value) {
-            getChartData()
+            
+            // Check for exact match in productNumbers
+            const exactMatch = productNumbers.value.some(
+                product => product === searchText.value
+            );
+            
+            if (exactMatch) {
+                getChartData();
+            }
         }
     },
     { deep: true }
-)
+);
 
 const processChartData = (apiData, time) => {
     const formatDate = (isoString) => {
