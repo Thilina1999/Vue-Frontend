@@ -18,6 +18,7 @@
     "chart.js": "^4.4.9",
     "dayjs": "^1.11.13",
     "front-end": "file:",
+    "pinia": "^3.0.2",
     "styled-components": "^6.1.17",
     "vue": "^3.5.13",
     "vue-chartjs": "^5.3.2",

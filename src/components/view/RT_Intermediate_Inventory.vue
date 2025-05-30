@@ -52,6 +52,7 @@ import { loadConfig } from '../../utils/config'
 import { refreshTbale, resetTimer } from '../../utils/refreshFunc'
 import { convertToCSV, downloadCSV } from '../../utils/csvFunc'
 import { inventory } from '../constant/Data'
+import { useInventoryStore } from '../../store/inventoryStore'
 
 // Refs
 const selectedManufacturer = ref(null)
@@ -62,6 +63,8 @@ const searchText = ref('')
 const refreshIntervalSeconds = ref(10)
 const inventoryKey = ref(0)
 const intervalId = ref(null)
+
+const inventoryStore = useInventoryStore()
 
 // Lifecycle hook
 onMounted(() => {
@@ -91,7 +94,7 @@ onMounted(() => {
 // Methods
 const getInventoryPageData = async (page, perPage) => {
   try {
-    const res = await getInventoryPage(page, perPage, selectedManufacturer.value, searchText.value, selectedShippingClassification.value)
+    const res = await inventoryStore.fetchPage(page, perPage, selectedManufacturer.value, searchText.value, selectedShippingClassification.value)
     return res
   } catch (err) {
     console.error('Error fetching paginated inventory:', err)
@@ -123,6 +126,7 @@ const handleClick = async () => {
 }
 
 const handleRefresh = () => {
+  inventoryStore.clearCache();
   refreshTbale(inventoryKey, () =>
     resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
   )

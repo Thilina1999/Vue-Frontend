@@ -114,14 +114,11 @@ const processChartData = (apiData, time) => {
     const formatDate = (isoString) => {
         const date = new Date(isoString);
         if (time === "日单位") {
-            // Format: "MM/DD" (e.g., "9/11")
             return `${date.getMonth() + 1}/${date.getDate()}`;
         } else {
-            // Format: "MM/DD HH:MM" (e.g., "9/11 14:30")
             return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
         }
     };
-
     const labels = apiData.map(item => formatDate(item.time));
     const values = apiData.map(item => item.data);
 
