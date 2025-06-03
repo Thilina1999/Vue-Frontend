@@ -34,7 +34,7 @@
             </div>
 
             <div class="p-5 lg:grid lg:grid-cols-12 flex-wrap items-end">
-                <div class="col-span-1 justify-start flex">
+                <div class="col-span-1 justify-start flex mb-3 lg:mb-0">
                     <Tray_Tbale header="ASSY品番" :number="`${searchText}`" />
                 </div>
                 <div class="col-span-11 justify-items-start">
@@ -117,12 +117,12 @@ watch(
             selectedGroupName.value &&
             selectedDateFirst.value &&
             selectedDateSecond.value) {
-            
+
             // Check for exact match in productNumbers
             const exactMatch = productNumbers.value.some(
                 product => product === searchText.value
             );
-            
+
             if (exactMatch) {
                 getChartData();
             }

@@ -1,3 +1,5 @@
 inventory_refresh_seconds: 60
 status_refresh_seconds: 60
 buffer_capacity_seconds: 120
+dynamic_seconds: 120
+
