@@ -10,10 +10,12 @@
                 </div>
             </MenuButton>
         </div>
-        <transition enter-active-class="transition ease-out duration-100"
-            enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100"
-            leave-to-class="transform opacity-0 scale-95">
+        <transition enter-active-class="transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            enter-from-class="opacity-0 translate-y-2 scale-[0.97] blur-[1px]"
+            enter-to-class="opacity-100 translate-y-0 scale-100 blur-0"
+            leave-active-class="transition-all duration-200 ease-[cubic-bezier(0.7,0,0.84,0)]"
+            leave-from-class="opacity-100 translate-y-0 scale-100 blur-0"
+            leave-to-class="opacity-0 translate-y-2 scale-[0.97] blur-[1px]">
             <MenuItems
                 class="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-[#212121] shadow-2xl shadow-black ring-1 ring-black/5 focus:outline-none">
                 <div class="max-h-72 overflow-y-auto">
@@ -49,14 +51,14 @@ const tempArray = ref([])
 
 // Update tempArray whenever dataTransfer or modelValue changes
 watch(
-  [() => props.dataTransfer, () => props.modelValue],
-  ([data, selected]) => {
-    if (Array.isArray(data)) {
-      const trimmed = selected?.trim()
-      tempArray.value = data.filter(item => item !== trimmed)
-    }
-  },
-  { immediate: true }
+    [() => props.dataTransfer, () => props.modelValue],
+    ([data, selected]) => {
+        if (Array.isArray(data)) {
+            const trimmed = selected?.trim()
+            tempArray.value = data.filter(item => item !== trimmed)
+        }
+    },
+    { immediate: true }
 )
 
 const selectedLabel = computed(() => props.modelValue)
@@ -65,5 +67,3 @@ function selectSelectedData(value) {
     emit('update:modelValue', value)
 }
 </script>
-
-

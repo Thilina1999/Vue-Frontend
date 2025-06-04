@@ -18,3 +18,7 @@ export const headers = [
     'FA端数品', '外観検査', '更新日時'
   ]
 
+export const page_slected = [
+  { label: "リアルタイム中間在庫", sheet: "nox_assy_wip_inventories2", type: "test" },
+  { label: "リアルタイム棚札ステータス", sheet: "nox_assy_esl_status", type: "test" }
+];
