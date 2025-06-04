@@ -76,7 +76,6 @@ onMounted(() => {
     getStatus()
         .then(res => {
             status_all.value = res.data
-            console.log(status_all)
         })
         .catch(err => {
             console.error('Error extracting data', err);
