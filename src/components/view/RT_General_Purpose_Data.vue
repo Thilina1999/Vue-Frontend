@@ -3,6 +3,14 @@
         <br />
         <div class="flex items-center space-x-4">
             <Title title="汎用テーブル表示" />
+            <Title_Text class="text-lg" :text="`データペース: ${selectedType}`" />
+            <Title_Text class="text-lg" :text="`テーブル名: ${selectedSheet}`" />
+            <Title_Text class="text-lg" text="最終更新日時" />
+            <TimeFunction class="text-lg" />
+            <Title_Text class="text-lg" :text="`更新頻度: ${inventoryKey} 分`" />
+            <button type="button" @click="handleRefresh">
+                <Refresh class="h-6 w-6 cursor-pointer" />
+            </button>
         </div>
         <br />
         <div class="grid grid-cols-8 items-center gap-4 flex-wrap">
@@ -24,6 +32,9 @@ import Page_Bar_Placholder from '../atom/Page_Bar_Placholder.vue';
 import { page_slected } from '../constant/Data';
 import { refreshTbale, resetTimer } from '../../utils/refreshFunc'
 import { loadConfig } from '../../utils/config'
+import Title_Text from '../atom/Title_Text.vue';
+import TimeFunction from '../molecules/TimeFunction.vue';
+import Refresh from '../../../public/assets/Refresh.vue';
 
 const inventoryStore = useGeneralInventoryStore()
 const statusStore = useGeneralStatusStore()
@@ -34,13 +45,24 @@ const intervalId = ref(null)
 const formRef = ref([]);
 const selectedValue = ref(page_slected[0].label);
 
+const selectedType = ref(null);
+const selectedSheet = ref(null);
+
 const currentStore = computed(() => {
     const selectedOption = page_slected.find(item => item.label === selectedValue.value);
     if (!selectedOption) return null;
 
-    return selectedOption.sheet === 'nox_assy_wip_inventories2'
-        ? inventoryStore
-        : statusStore;
+    selectedType.value = selectedOption.type;
+    selectedSheet.value = selectedOption.sheet;
+
+    if (selectedOption.sheet === 'nox_assy_wip_inventories2') {
+        return inventoryStore;
+    } else if (selectedOption.sheet === 'nox_assy_esl_status') {
+        return statusStore;
+    } else {
+        return inventoryStore; 
+    }
+
 });
 
 onMounted(() => {

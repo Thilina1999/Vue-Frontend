@@ -5,10 +5,7 @@
         <div class="grid grid-cols-9 w-full">
           <div class="flex col-span-3 items-center justify-start">
             <Logo class="px-4" />
-            <a
-              class="text-white nav-link overflow-hidden whitespace-nowrap text-ellipsis block w-full"
-              href="#"
-            >
+            <a class="text-white nav-link overflow-hidden whitespace-nowrap text-ellipsis block w-full" href="#">
               NOx組付け工程在庫管理システム
             </a>
           </div>
@@ -18,7 +15,9 @@
           <div class="flex items-center justify-end col-span-3">
             <TimeFunction class="m-2" />
             <Settings class="w-5 h-5 m-2" />
-            <Help class="w-5 h-5 m-2" />
+            <router-link to="/help" class="inline-flex">
+              <Help class="w-5 h-5 m-2" />
+            </router-link>
           </div>
         </div>
       </div>

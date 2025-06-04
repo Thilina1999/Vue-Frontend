@@ -2,4 +2,10 @@ inventory_refresh_seconds: 60
 status_refresh_seconds: 60
 buffer_capacity_seconds: 120
 dynamic_seconds: 120
-
+お問い合わせ先:
+  所属: "*製品部室*課"
+  氏名: "**** **** *"
+  メールアドレス: "@jp.denso.com"
+  電話番号: "--*"
+資料: 
+  資料名: 'C:\\\\\99_NO.組付工程在庫管理Webシステム設計書.xlsx'

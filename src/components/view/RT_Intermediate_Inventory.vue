@@ -1,5 +1,5 @@
   <template>
-    <div class="element">
+    <div class="element pb-2">
       <br />
       <div class="flex items-center space-x-4">
         <Title title="リアルタイム中間在庫" />
