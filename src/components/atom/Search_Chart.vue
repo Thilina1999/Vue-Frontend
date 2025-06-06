@@ -19,7 +19,7 @@
             leave-from-class="opacity-100 translate-y-0 scale-100 blur-0"
             leave-to-class="opacity-0 translate-y-2 scale-[0.97] blur-[1px]">
             <div v-if="showDropdown && filteredOptions.length > 0"
-                class="absolute z-10 w-full mt-2 bg-[#212121] dropdown-scroll rounded-sm max-h-60 overflow-auto shadow-2xl shadow-black">
+                class="absolute z-10 w-full mt-2 bg-[#212121] dropdown-scroll rounded-sm max-h-72 overflow-auto shadow-2xl shadow-black">
                 <ul>
                     <li v-for="(option, index) in filteredOptions" :key="index"
                         class="px-3 py-2 text-white hover:bg-white hover:text-black cursor-pointer"
