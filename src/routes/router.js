@@ -5,6 +5,7 @@ import RT_Inventory_Buffer from "../components/view/RT_Inventory_Buffer.vue";
 import RT_Interim_Inventory from "../components/view/RT_Interim_Inventory.vue";
 import RT_General_Purpose_Data from "../components/view/RT_general_purpose_data.vue";
 import Help_Screen from "../components/view/Help_Screen.vue";
+import RT_MGT_Master from "../components/view/RT_MGT_Master.vue";
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: "/help",
     name: "Help_Screen",
     component: Help_Screen,
+  },
+  {
+    path: "/mgt-master",
+    name: "RT_MGT_Master",
+    component: RT_MGT_Master,
   },
 ];
 
