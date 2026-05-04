@@ -26,7 +26,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import Title from '../atom/Title.vue';
-import { useGeneralInventoryStore, useGeneralStatusStore } from '../../store/generalStore';
+import { useGeneralInventoryStore, useGeneralStatusStore, useGeneral_MGT_MasterStore } from '../../store/generalStore';
 import Dynamic_Tb from '../organisms/Dynamic_Tb.vue';
 import Page_Bar_Placholder from '../atom/Page_Bar_Placholder.vue';
 import { page_slected } from '../constant/Data';
@@ -38,6 +38,8 @@ import Refresh from '../../../public/assets/Refresh.vue';
 
 const inventoryStore = useGeneralInventoryStore()
 const statusStore = useGeneralStatusStore()
+const mgtStore = useGeneral_MGT_MasterStore()
+
 const refreshIntervalSeconds = ref(10)
 const inventoryKey = ref(0)
 const intervalId = ref(null)
@@ -59,8 +61,11 @@ const currentStore = computed(() => {
         return inventoryStore;
     } else if (selectedOption.sheet === 'nox_assy_esl_status') {
         return statusStore;
-    } else {
-        return inventoryStore; 
+    } else if (selectedOption.sheet === 'nox_assy_inv_mgt_master') {
+        return mgtStore;
+    }
+    else {
+        return inventoryStore;
     }
 
 });
@@ -100,6 +105,7 @@ const getInventoryPageData = async (page, perPage) => {
 const handleRefresh = () => {
     inventoryStore.clearCache();
     statusStore.clearCache();
+    mgtStore.clearCache();
     refreshTbale(inventoryKey, () =>
         resetTimer(intervalId, handleRefresh, refreshIntervalSeconds)
     )

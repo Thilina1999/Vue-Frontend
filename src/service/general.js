@@ -19,4 +19,12 @@ export const getStatusGeneralPage = ( page, per_page ) =>
     },
   });
 
+export const getStatusMasterPage = ( page, per_page ) =>
+  apiClient.get("/mgt_master_page", {
+    params: {
+      page,
+      per_page
+    },
+  });
+
   

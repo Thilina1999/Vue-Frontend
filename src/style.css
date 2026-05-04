@@ -22,6 +22,17 @@ body {
       padding-left: 3rem;  /* lg:px-8 = 32px */
       padding-right: 3rem;
     }
+
+    
+  }
+
+    @media (min-width: 1920px) { /* lg */
+    .element {
+      padding-left: 18rem;  /* lg:px-8 = 32px */
+      padding-right: 18rem;
+    }
+
+    
   }
 
 .scrollbar-top-wrapper {
