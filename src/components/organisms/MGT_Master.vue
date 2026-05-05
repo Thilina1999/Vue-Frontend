@@ -8,23 +8,79 @@
                         <input type="checkbox" :checked="allSelected" @change="toggleSelectAll" />
                     </th>
                     <th class="px-2 py-2">No</th>
-                    <th v-for="(header, index) in dynamicHeaders" :key="index" class="px-2 py-2">
-                        {{ header }}
-                    </th>
+                    <th class="px-2 py-2">設備グループID</th>
+                    <th class="px-2 py-2">設備機番</th>
+                    <th class="px-2 py-2">設備グループ名称</th>
+                    <th class="px-2 py-2">在庫管理グループID</th>
+                    <th class="px-2 py-2">在庫管理グループ名称</th>
+                    <th class="px-2 py-2">基準在庫日数</th>
+                    <th class="px-2 py-2">基準在庫管理幅</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr v-for="(row, rowIndex) in internalData" :key="rowIndex" class="bg-gray-300 text-black text-sm">
+                <tr v-for="(row, index) in internalData" :key="index" class="bg-gray-300 text-black text-sm">
                     <td class="border border-gray-300 px-2 py-2 text-center">
-                        <input type="checkbox" :value="rowIndex" v-model="selectedRows" />
+                        <input type="checkbox" :value="index" v-model="selectedRows" />
                     </td>
+
                     <td class="border border-gray-300 px-2 py-2 text-center">
-                        {{ rowIndex + 1 }}
+                        {{ index + 1 }}
                     </td>
-                    <td v-for="(value, colKey) in row" :key="colKey" class="border border-gray-300 px-2 py-2"
-                        :class="{ 'text-right': isNumericValue(value) }">
-                        {{ value }}
+
+                    <td class="border border-gray-300 px-2 py-2">
+                        {{ row.設備グループID }}
+                    </td>
+
+                    <td class="border border-gray-300 px-2 py-2">
+                        {{ row.設備機番 }}
+                    </td>
+
+                    <td class="border border-gray-300 px-2 py-2 text-right">
+                        {{ row.設備グループ名称 }}
+                    </td>
+
+                    <!-- 在庫管理グループID -->
+                    <td class="border border-gray-300 px-2 py-2" :class="{ 'bg-gray-400': isRowSelected(index) }">
+                        <template v-if="isRowSelected(index)">
+                            <input v-model="row.在庫管理グループID" @input="trackChange(row, index)"
+                                class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0" />
+                        </template>
+                        <template v-else>
+                            {{ row.在庫管理グループID }}
+                        </template>
+                    </td>
+
+                    <td class="border border-gray-300 px-2 py-2" :class="{ 'bg-gray-400': isRowSelected(index) }">
+                        <template v-if="isRowSelected(index)">
+                            <input v-model="row.在庫管理グループ名称" @input="trackChange(row, index)"
+                                class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0" />
+                        </template>
+                        <template v-else>
+                            {{ row.在庫管理グループ名称 }}
+                        </template>
+                    </td>
+
+                    <td class="border border-gray-300 px-2 py-2 text-right"
+                        :class="{ 'bg-gray-400': isRowSelected(index) }">
+                        <template v-if="isRowSelected(index)">
+                            <input v-model="row.基準在庫日数" @input="trackChange(row, index)" type="number"
+                                class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-right" />
+                        </template>
+                        <template v-else>
+                            {{ row.基準在庫日数 }}
+                        </template>
+                    </td>
+
+                    <td class="border border-gray-300 px-2 py-2 text-right"
+                        :class="{ 'bg-gray-400': isRowSelected(index) }">
+                        <template v-if="isRowSelected(index)">
+                            <input v-model="row.基準在庫管理幅" @input="trackChange(row, index)" type="number" step="0.01"
+                                class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-right" />
+                        </template>
+                        <template v-else>
+                            {{ row.基準在庫管理幅 }}
+                        </template>
                     </td>
                 </tr>
             </tbody>
@@ -63,7 +119,8 @@ const props = defineProps({
         type: Function,
         required: true,
     },
-    selectedValue: [Object, String]
+    selectedValue: [Object, String],
+    editedRows: [Object]
 })
 
 // Reactive state
@@ -74,6 +131,8 @@ const internalData = ref([])
 const dynamicHeaders = ref([])
 const selectedRows = ref([]) // Track selected row indices
 
+const originalData = ref([])
+
 // Fetch data and determine structure dynamically
 const goToPage = async (page) => {
     try {
@@ -81,6 +140,10 @@ const goToPage = async (page) => {
         internalData.value = res.data.data
         currentPage.value = res.data.meta.page
         totalPages.value = res.data.meta.total_pages
+
+        internalData.value = JSON.parse(JSON.stringify(res.data.data))
+        // keep original copy for comparison
+        originalData.value = JSON.parse(JSON.stringify(res.data.data))
 
         // Generate dynamic headers from all available keys
         if (internalData.value.length > 0) {
@@ -95,6 +158,50 @@ const goToPage = async (page) => {
     } catch (err) {
         console.error('Failed to fetch inventory data:', err)
     }
+}
+
+const emit = defineEmits(['update:editedRows']);
+
+const trackChange = (row, index) => {
+    const original = originalData.value[index]
+
+    const isChanged =
+        row.在庫管理グループID !== original.在庫管理グループID ||
+        row.在庫管理グループ名称 !== original.在庫管理グループ名称 ||
+        row.基準在庫日数 !== original.基準在庫日数 ||
+        row.基準在庫管理幅 !== original.基準在庫管理幅
+
+    const payload = {
+        設備グループID: row.設備グループID,
+        設備機番: row.設備機番,
+        在庫管理グループID: row.在庫管理グループID,
+        在庫管理グループ名称: row.在庫管理グループ名称,
+        基準在庫日数: row.基準在庫日数,
+        基準在庫管理幅: row.基準在庫管理幅,
+    }
+
+    let updated = [...props.editedRows]
+
+    const existingIndex = updated.findIndex(
+        r =>
+            r.設備グループID === row.設備グループID &&
+            r.設備機番 === row.設備機番
+    )
+
+    if (isChanged) {
+        if (existingIndex !== -1) {
+            updated[existingIndex] = payload
+        } else {
+            updated.push(payload)
+        }
+    } else {
+        if (existingIndex !== -1) {
+            updated.splice(existingIndex, 1)
+        }
+    }
+
+    emit('update:editedRows', updated)
+    console.log('UPDATED:', updated)
 }
 
 const isNumericValue = (value) => {
@@ -149,4 +256,9 @@ watch(
         goToPage(1)
     }
 )
+
+const isRowSelected = (index) => {
+    return selectedRows.value.includes(index)
+}
+
 </script>
