@@ -10,7 +10,8 @@
             <Title_Text class="text-lg" :text="`テーブル名: ${page_slected[2].sheet}`" />
         </div>
         <br />
-        <MGT_Master :editedRows="editedRows" @update:editedRows="editedRows = $event"
+        <MGT_Master :editedRows="editedRows" @update:editedRows="editedRows = $event"   :deleteRows="deleteRows"
+  @update:deleteRows="deleteRows = $event"
             :getInventoryPageData="getInventoryPageData" />
     </div>
 </template>
@@ -26,6 +27,8 @@ import { page_slected } from '../constant/Data';
 
 const mgtStore = useGeneral_MGT_MasterStore()
 const editedRows = ref([]);
+
+const deleteRows = ref([]);
 
 const getInventoryPageData = async (page, perPage) => {
     try {

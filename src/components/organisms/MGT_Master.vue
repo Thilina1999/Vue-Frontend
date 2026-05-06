@@ -21,12 +21,14 @@
             <tbody>
                 <tr v-for="(row, index) in internalData" :key="index" class="bg-gray-300 text-black text-sm">
                     <td class="border border-gray-300 px-2 py-2 text-center">
-                        <input type="checkbox" :value="index" v-model="selectedRows" />
+                        <input type="checkbox" :value="getRowKey(row)" v-model="selectedRows"
+                            @change="toggleDelete(getRowKey(row))" />
+
                     </td>
 
+
                     <td class="border border-gray-300 px-2 py-2 text-center">
-                        {{ index + 1 }}
-                    </td>
+                        {{ getRowNumber(index) }} </td>
 
                     <td class="border border-gray-300 px-2 py-2">
                         {{ row.設備グループID }}
@@ -41,8 +43,8 @@
                     </td>
 
                     <!-- 在庫管理グループID -->
-                    <td class="border border-gray-300 px-2 py-2" :class="{ 'bg-gray-400': isRowSelected(index) }">
-                        <template v-if="isRowSelected(index)">
+                    <td class="border border-gray-300 px-2 py-2" :class="{ 'bg-gray-400': isRowSelected(row) }">
+                        <template v-if="isRowSelected(row)">
                             <input v-model="row.在庫管理グループID" @input="trackChange(row, index)"
                                 class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0" />
                         </template>
@@ -51,8 +53,8 @@
                         </template>
                     </td>
 
-                    <td class="border border-gray-300 px-2 py-2" :class="{ 'bg-gray-400': isRowSelected(index) }">
-                        <template v-if="isRowSelected(index)">
+                    <td class="border border-gray-300 px-2 py-2" :class="{ 'bg-gray-400': isRowSelected(row) }">
+                        <template v-if="isRowSelected(row)">
                             <input v-model="row.在庫管理グループ名称" @input="trackChange(row, index)"
                                 class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0" />
                         </template>
@@ -62,8 +64,8 @@
                     </td>
 
                     <td class="border border-gray-300 px-2 py-2 text-right"
-                        :class="{ 'bg-gray-400': isRowSelected(index) }">
-                        <template v-if="isRowSelected(index)">
+                        :class="{ 'bg-gray-400': isRowSelected(row) }">
+                        <template v-if="isRowSelected(row)">
                             <input v-model="row.基準在庫日数" @input="trackChange(row, index)" type="number"
                                 class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-right" />
                         </template>
@@ -73,8 +75,8 @@
                     </td>
 
                     <td class="border border-gray-300 px-2 py-2 text-right"
-                        :class="{ 'bg-gray-400': isRowSelected(index) }">
-                        <template v-if="isRowSelected(index)">
+                        :class="{ 'bg-gray-400': isRowSelected(row) }">
+                        <template v-if="isRowSelected(row)">
                             <input v-model="row.基準在庫管理幅" @input="trackChange(row, index)" type="number" step="0.01"
                                 class="w-full bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-right" />
                         </template>
@@ -120,7 +122,11 @@ const props = defineProps({
         required: true,
     },
     selectedValue: [Object, String],
-    editedRows: [Object]
+    editedRows: [Object],
+    deleteRows: {
+        type: Array,
+        default: () => []
+    }
 })
 
 // Reactive state
@@ -153,14 +159,12 @@ const goToPage = async (page) => {
             })
             dynamicHeaders.value = Array.from(allKeys)
         }
-        // Clear selection on page change
-        selectedRows.value = []
     } catch (err) {
         console.error('Failed to fetch inventory data:', err)
     }
 }
 
-const emit = defineEmits(['update:editedRows']);
+const emit = defineEmits(['update:editedRows', 'update:deleteRows'])
 
 const trackChange = (row, index) => {
     const original = originalData.value[index]
@@ -222,8 +226,12 @@ const toggleSelectAll = () => {
     if (allSelected.value) {
         selectedRows.value = []
     } else {
-        selectedRows.value = internalData.value.map((_, idx) => idx)
+        selectedRows.value = internalData.value.map(row => getRowKey(row))
     }
+}
+
+const getRowKey = (row) => {
+    return `${row.設備グループID}_${row.設備機番}`
 }
 
 // Pagination range calculation
@@ -246,6 +254,12 @@ const paginationRange = computed(() => {
     return range
 })
 
+const getRowNumber = (index) => {
+    return (currentPage.value - 1) * rowsPerPage.value + index + 1
+}
+
+
+
 onMounted(() => {
     goToPage(1)
 })
@@ -257,8 +271,39 @@ watch(
     }
 )
 
-const isRowSelected = (index) => {
-    return selectedRows.value.includes(index)
+const toggleDelete = (key) => {
+    let updatedDelete = [...(props.deleteRows || [])]
+    let updatedEdited = [...(props.editedRows || [])]
+
+    const deleteIndex = updatedDelete.indexOf(key)
+
+    if (deleteIndex !== -1) {
+        // UNCHECK → remove from delete list
+        updatedDelete.splice(deleteIndex, 1)
+    } else {
+        // CHECK → add to delete list
+        updatedDelete.push(key)
+    }
+
+    // IMPORTANT: also remove from editedRows when unchecked
+    updatedEdited = updatedEdited.filter(
+        r => `${r.設備グループID}_${r.設備機番}` !== key
+    )
+
+    emit('update:deleteRows', updatedDelete)
+    emit('update:editedRows', updatedEdited)
+
+    console.log('DELETE UPDATED:', updatedDelete)
+    console.log('EDITED CLEANED:', updatedEdited)
 }
+
+const isRowSelected = (row) => {
+    const key = getRowKey(row)
+    return (
+        selectedRows.value.includes(key) ||
+        (props.deleteRows || []).includes(key)
+    )
+}
+
 
 </script>
