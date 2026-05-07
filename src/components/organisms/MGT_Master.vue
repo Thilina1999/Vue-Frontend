@@ -151,7 +151,6 @@ const goToPage = async (page) => {
         // keep original copy for comparison
         originalData.value = JSON.parse(JSON.stringify(res.data.data))
 
-        // Generate dynamic headers from all available keys
         if (internalData.value.length > 0) {
             const allKeys = new Set()
             internalData.value.forEach(obj => {
@@ -159,6 +158,11 @@ const goToPage = async (page) => {
             })
             dynamicHeaders.value = Array.from(allKeys)
         }
+
+        selectedRows.value = []
+        emit('update:editedRows', [])
+        emit('update:deleteRows', [])
+
     } catch (err) {
         console.error('Failed to fetch inventory data:', err)
     }
@@ -205,7 +209,6 @@ const trackChange = (row, index) => {
     }
 
     emit('update:editedRows', updated)
-    console.log('UPDATED:', updated)
 }
 
 const isNumericValue = (value) => {
@@ -258,8 +261,6 @@ const getRowNumber = (index) => {
     return (currentPage.value - 1) * rowsPerPage.value + index + 1
 }
 
-
-
 onMounted(() => {
     goToPage(1)
 })
@@ -278,23 +279,17 @@ const toggleDelete = (key) => {
     const deleteIndex = updatedDelete.indexOf(key)
 
     if (deleteIndex !== -1) {
-        // UNCHECK → remove from delete list
         updatedDelete.splice(deleteIndex, 1)
     } else {
-        // CHECK → add to delete list
         updatedDelete.push(key)
     }
 
-    // IMPORTANT: also remove from editedRows when unchecked
     updatedEdited = updatedEdited.filter(
         r => `${r.設備グループID}_${r.設備機番}` !== key
     )
 
     emit('update:deleteRows', updatedDelete)
     emit('update:editedRows', updatedEdited)
-
-    console.log('DELETE UPDATED:', updatedDelete)
-    console.log('EDITED CLEANED:', updatedEdited)
 }
 
 const isRowSelected = (row) => {
@@ -304,6 +299,5 @@ const isRowSelected = (row) => {
         (props.deleteRows || []).includes(key)
     )
 }
-
 
 </script>
