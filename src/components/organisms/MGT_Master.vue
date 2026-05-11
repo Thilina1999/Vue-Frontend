@@ -119,7 +119,11 @@ import { ref, onMounted, computed, watch } from 'vue'
 const props = defineProps({
     getInventoryPageData: {
         type: Function,
-        required: true,
+        required: true
+    },
+    refresh: {
+        type: Boolean,
+        default: false
     },
     selectedValue: [Object, String],
     editedRows: [Object],
@@ -158,11 +162,6 @@ const goToPage = async (page) => {
             })
             dynamicHeaders.value = Array.from(allKeys)
         }
-
-        selectedRows.value = []
-        emit('update:editedRows', [])
-        emit('update:deleteRows', [])
-
     } catch (err) {
         console.error('Failed to fetch inventory data:', err)
     }
@@ -269,6 +268,17 @@ watch(
     () => [props.selectedValue],
     () => {
         goToPage(1)
+    }
+)
+
+watch(
+    () => props.refresh,
+    () => {
+        selectedRows.value = []
+        emit('update:editedRows', [])
+        emit('update:deleteRows', [])
+
+        goToPage(currentPage.value)
     }
 )
 

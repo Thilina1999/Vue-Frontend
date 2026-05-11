@@ -15,7 +15,8 @@
         </div>
         <br />
         <MGT_Master :editedRows="editedRows" @update:editedRows="editedRows = $event" :deleteRows="deleteRows"
-            @update:deleteRows="deleteRows = $event" :getInventoryPageData="getInventoryPageData" :key="inventoryKey" />
+            @update:deleteRows="deleteRows = $event" :getInventoryPageData="getInventoryPageData"
+            :refresh="refreshTrigger" />
     </div>
 </template>
 
@@ -60,10 +61,10 @@ const getInventoryPageData = async (page, perPage) => {
     }
 }
 
-const inventoryKey = ref(0)
+const refreshTrigger = ref(false)
 
 const refreshTable = () => {
-    inventoryKey.value++
+    refreshTrigger.value = !refreshTrigger.value
 }
 
 const updateData = async () => {
@@ -71,10 +72,9 @@ const updateData = async () => {
         const payload = editedRows.value
         const res = await updateMgtMaster(payload)
         if (res.status === 200) {
-
             editedRows.value = []
             mgtStore.clearCache();
-            inventoryKey.value++
+            refreshTable();
         }
 
     } catch (err) {
