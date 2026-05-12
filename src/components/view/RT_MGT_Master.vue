@@ -8,7 +8,7 @@
         <div class="flex items-center space-x-5">
             <Title_Text class="text-lg" :text="`データペース: ${page_slected[2].type}`" />
             <Title_Text class="text-lg" :text="`テーブル名: ${page_slected[2].sheet}`" />
-            <Submit_button text="行の追加" :icon="Plus" />
+            <Submit_button text="行の追加" :icon="Plus" :handleClick="() => showModal = true" />
             <Submit_button text="データ更新" :icon="Refresh" :disabled="isUpdateDisabled" :handleClick="updateData" />
             <Submit_button text="データ削除" :icon="Delete" :disabled="isDeleteDisabled" />
 
@@ -17,7 +17,9 @@
         <MGT_Master :editedRows="editedRows" @update:editedRows="editedRows = $event" :deleteRows="deleteRows"
             @update:deleteRows="deleteRows = $event" :getInventoryPageData="getInventoryPageData"
             :refresh="refreshTrigger" />
+        <MGT_Data_Modal v-model:showModal="showModal" />
     </div>
+
 </template>
 
 <script setup>
@@ -29,6 +31,8 @@ import { useGeneral_MGT_MasterStore } from '../../store/generalStore';
 import { page_slected } from '../constant/Data';
 import Submit_button from '../atom/Submit_button.vue';
 
+import MGT_Data_Modal from '../organisms/MGT_Data_Modal.vue';
+
 import { updateMgtMaster } from '../../service/mgt_inventory';
 
 import Refresh from '../../../public/assets/Refresh.vue';
@@ -39,6 +43,8 @@ const mgtStore = useGeneral_MGT_MasterStore()
 
 const editedRows = ref([]);
 const deleteRows = ref([]);
+
+const showModal = ref(false)
 
 const isUpdateDisabled = computed(() => editedRows.value.length === 0)
 const isDeleteDisabled = computed(() => deleteRows.value.length === 0 || editedRows.value.length !== 0)
