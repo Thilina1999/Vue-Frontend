@@ -1,58 +1,66 @@
 <template>
     <div class="element text-white">
-        <!-- Modal -->
-        <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="bg-white rounded-lg shadow-xl w-full max-w-lg text-black">
-                <!-- Header -->
-                <div class="flex items-center justify-between p-4 border-b">
-                    <h2 class="text-lg font-semibold">
-                        New Message
-                    </h2>
+        <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-white/30">
+            <div class="bg-black rounded-lg shadow-2xl w-full max-w-xl text-white">
 
-                    <button @click="close" class="text-gray-500 hover:text-black text-xl">
-                        ×
-                    </button>
+                <!-- Header -->
+                <div class="flex items-center p-6 pb-2 gap-2">
+                    <ContactPerson />
+                    <h1 class="text-lg">行の追加</h1>
                 </div>
 
                 <!-- Body -->
-                <div class="p-4 space-y-4">
-                    <div>
-                        <label class="block mb-1 font-medium">
-                            Recipient
-                        </label>
+                <div class="p-6 space-y-2">
 
-                        <input type="text"
-                            class="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500" />
+                    <div class="grid grid-cols-2 items-center gap-4 pb-4 flex-wrap">
+                        <Input_Field class="w-full" text="設備グループID" input="text" v-model="formData.設備グループID" />
+
+                        <Input_Field class="w-full" text="設備グループ名称" input="text" v-model="formData.設備グループ名称" />
                     </div>
 
-                    <div>
-                        <label class="block mb-1 font-medium">
-                            Message
-                        </label>
+                    <div class="grid grid-cols-2 items-center gap-4 pb-4 flex-wrap">
+                        <Input_Field class="w-full" text="在庫管理グループID" input="text" v-model="formData.在庫管理グループID" />
 
-                        <textarea rows="4"
-                            class="w-full border rounded px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        <Input_Field class="w-full" text="在庫管理グループ名称" input="text" v-model="formData.在庫管理グループ名称" />
                     </div>
+
+                    <div class="grid grid-cols-3 items-center gap-4 flex-wrap">
+                        <Input_Field class="w-full" text="設備機番" input="text" v-model="formData.設備機番" />
+
+                        <Input_Field class="w-full" text="基準在庫日数" input="number" v-model="formData.基準在庫日数" />
+
+                        <Input_Field class="w-full" text="基準在庫管理幅" input="number" v-model="formData.基準在庫管理幅" />
+                    </div>
+
                 </div>
 
                 <!-- Footer -->
-                <div class="flex justify-end gap-2 p-4 border-t">
-                    <button @click="close" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+                <div class="flex justify-end gap-4 p-6 pb-7">
+                    <button @click="close" class="px-8 py-2 bg-gray-300 rounded hover:bg-gray-400">
                         Close
                     </button>
 
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                        Send
+                    <button class="px-8 py-2 bg-blue-400 text-white rounded hover:bg-blue-500" @click="handleClick">
+                        追加
                     </button>
                 </div>
+
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-const props = defineProps({
-    showModal: Boolean
+import Input_Field from '../atom/Input_Field.vue'
+import ContactPerson from '../../../public/assets/ContactPerson.vue'
+
+defineProps({
+    showModal: Boolean,
+    formData: Object,
+    handleClick: {
+        type: Function,
+        required: true,
+    },
 })
 
 const emit = defineEmits(['update:showModal'])

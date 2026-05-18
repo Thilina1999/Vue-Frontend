@@ -17,7 +17,7 @@
         <MGT_Master :editedRows="editedRows" @update:editedRows="editedRows = $event" :deleteRows="deleteRows"
             @update:deleteRows="deleteRows = $event" :getInventoryPageData="getInventoryPageData"
             :refresh="refreshTrigger" />
-        <MGT_Data_Modal v-model:showModal="showModal" />
+        <MGT_Data_Modal v-model:showModal="showModal" :formData="formData" :handleClick="addData" />
     </div>
 
 </template>
@@ -33,7 +33,7 @@ import Submit_button from '../atom/Submit_button.vue';
 
 import MGT_Data_Modal from '../organisms/MGT_Data_Modal.vue';
 
-import { updateMgtMaster } from '../../service/mgt_inventory';
+import { updateMgtMaster, addMgtMaster } from '../../service/mgt_inventory';
 
 import Refresh from '../../../public/assets/Refresh.vue';
 import Plus from '../../../public/assets/Plus.vue';
@@ -48,6 +48,16 @@ const showModal = ref(false)
 
 const isUpdateDisabled = computed(() => editedRows.value.length === 0)
 const isDeleteDisabled = computed(() => deleteRows.value.length === 0 || editedRows.value.length !== 0)
+
+const formData = ref({
+    設備グループID: '',
+    設備グループ名称: '',
+    在庫管理グループID: '',
+    在庫管理グループ名称: '',
+    設備機番: '',
+    基準在庫日数: 0,
+    基準在庫管理幅: 0
+})
 
 const getInventoryPageData = async (page, perPage) => {
     try {
@@ -85,6 +95,24 @@ const updateData = async () => {
 
     } catch (err) {
         console.error("Update failed:", err)
+    }
+}
+
+const addData = async () => {
+    try {
+        const payload = formData.value
+        const res = await addMgtMaster(payload)
+        if (res.status === 200) {
+            editedRows.value = []
+            mgtStore.clearCache();
+            refreshTable();
+            showModal.value = false
+        }
+
+        console.log(response.data)
+
+    } catch (error) {
+        console.log(error.response.data)
     }
 }
 
