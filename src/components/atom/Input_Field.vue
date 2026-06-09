@@ -3,7 +3,7 @@
         <form class="w-full">
             <div class="input">
                 <input :type="input"
-                    class="block w-full p-3 text-md text-white rounded-sm dark:bg-[#212121] dark:placeholder-white dark:text-white"
+                    class="block w-full p-3 text-md text-white rounded-sm dark:bg-[#212121] dark:placeholder-gray-400 dark:text-white"
                     :placeholder="text" v-model="searchValue" @input="emit('update:modelValue', searchValue)"
                     required />
             </div>

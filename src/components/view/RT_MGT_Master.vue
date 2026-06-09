@@ -10,7 +10,7 @@
             <Title_Text class="text-lg" :text="`テーブル名: ${page_slected[2].sheet}`" />
             <Submit_button text="行の追加" :icon="Plus" :handleClick="() => showModal = true" />
             <Submit_button text="データ更新" :icon="Refresh" :disabled="isUpdateDisabled" :handleClick="updateData" />
-            <Submit_button text="データ削除" :icon="Delete" :disabled="isDeleteDisabled" />
+            <Submit_button text="データ削除" :icon="Delete" :disabled="isDeleteDisabled" :handleClick="deleteData" />
 
         </div>
         <br />
@@ -33,7 +33,7 @@ import Submit_button from '../atom/Submit_button.vue';
 
 import MGT_Data_Modal from '../organisms/MGT_Data_Modal.vue';
 
-import { updateMgtMaster, addMgtMaster } from '../../service/mgt_inventory';
+import { updateMgtMaster, addMgtMaster, deleteMgtMaster } from '../../service/mgt_inventory';
 
 import Refresh from '../../../public/assets/Refresh.vue';
 import Plus from '../../../public/assets/Plus.vue';
@@ -98,6 +98,23 @@ const updateData = async () => {
     }
 }
 
+const deleteData = async () => {
+    try {
+        const payload = deleteRows.value
+
+        const res = await deleteMgtMaster(payload)
+
+        if (res.status === 200) {
+            deleteRows.value = []
+            mgtStore.clearCache()
+            refreshTable()
+        }
+
+    } catch (err) {
+        console.log("Delete failed:", err)
+    }
+}
+
 const addData = async () => {
     try {
         const payload = formData.value
@@ -109,10 +126,8 @@ const addData = async () => {
             showModal.value = false
         }
 
-        console.log(response.data)
-
     } catch (error) {
-        console.log(error.response.data)
+        console.log(error)
     }
 }
 

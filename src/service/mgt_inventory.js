@@ -5,3 +5,8 @@ export const updateMgtMaster = (payload) =>
 
 export const addMgtMaster = (payload) =>
   apiClient.post("/add_mgt_master", payload);
+
+export const deleteMgtMaster = (payload) =>
+  apiClient.delete("/delete_mgt_master", {
+    data: payload
+  });
